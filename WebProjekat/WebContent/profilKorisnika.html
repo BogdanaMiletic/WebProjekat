@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Ulogovani korisnik pocetna</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/profilKorisnika.js"></script>
+</head>
+<body>
+
+<p> Uspesno ulogovani...</p>
+<p> Profil ulogovanog korisnika</p>
+<form action="#" method="PUT">
+<div>
+		<label>Ime: </label>
+ 		<input type="text" name="ime">
+	</div>
+	<div>
+		<label>Prezime: </label>
+ 		<input type="text" name="prezime">
+	</div>
+	<div>
+		<label name="uloga">Uloga korisnika: </label>
+		
+	</div>
+ 	
+ 	<div>
+ 		<label>Korisnicko ime: </label>
+ 		<input type="text" name="korisnickoIme">
+ 	</div>
+ 	
+ 	<div>
+ 		<label>Lozinka</label>
+ 		<input type="text" name="lozinka">
+ 	</div>
+ 	
+ 	<div>
+ 		<label>Datum rodjenja: </label>
+ 		<input type="date" name="datumRodjenja" min="1950-01-01" >
+ 	</div>
+ 		
+ 	<div>
+ 		<label>Pol: </label>
+ 		<br/>
+ 		<input type="radio" name="muski" value="MUSKI">
+ 		<label for="muski">muski</label>
+ 		<input type="radio" name="zenski" value="ZENSKI">
+ 		<label for="zenski">zenski</label>
+ 	</div>
+ 	<input type="submit" value="izmeni podatke profila"/>
+ 	
+</form>
+</body>
+</html>
