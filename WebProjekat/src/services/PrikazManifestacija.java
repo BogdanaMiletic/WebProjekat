@@ -141,6 +141,9 @@ public class PrikazManifestacija {
 		else if(sortiranje.equals("DATUM")) {
 			manifestacijeRezultati = this.sortiranjePoDatumu(manifestacijeRezultati);
 		}
+		else if(sortiranje.equals("CENA")) {
+			manifestacijeRezultati = this.sortiranjePoCeni(manifestacijeRezultati);
+		}
 		
 		
 		
@@ -176,6 +179,21 @@ public class PrikazManifestacija {
 			
 		});
 		
+		return manifestacije;
+	}
+	//sortiranje po ceni karte
+	private ArrayList<Manifestacija> sortiranjePoCeni(ArrayList<Manifestacija> manifestacije){
+		Collections.sort(manifestacije, new Comparator<Manifestacija>(){
+
+			@Override
+			public int compare(Manifestacija o1, Manifestacija o2) {
+				if(o1.getCenaRegularKarte() < o2.getCenaRegularKarte())
+					return 1;
+					else
+						return -1;
+			}
+			
+		});
 		return manifestacije;
 	}
 	
