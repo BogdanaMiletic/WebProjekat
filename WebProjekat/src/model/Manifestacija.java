@@ -33,7 +33,57 @@ public class Manifestacija {
 		this.status = status;
 		this.lokacija = lokacija;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + brojMesta;
+		long temp;
+		temp = Double.doubleToLongBits(cenaRegularKarte);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((datumIvremeOdrzavanja == null) ? 0 : datumIvremeOdrzavanja.hashCode());
+		result = prime * result + ((lokacija == null) ? 0 : lokacija.hashCode());
+		result = prime * result + ((naziv == null) ? 0 : naziv.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((tip == null) ? 0 : tip.hashCode());
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Manifestacija other = (Manifestacija) obj;
+		if (brojMesta != other.brojMesta)
+			return false;
+		if (Double.doubleToLongBits(cenaRegularKarte) != Double.doubleToLongBits(other.cenaRegularKarte))
+			return false;
+		if (datumIvremeOdrzavanja == null) {
+			if (other.datumIvremeOdrzavanja != null)
+				return false;
+		} else if (!datumIvremeOdrzavanja.equals(other.datumIvremeOdrzavanja))
+			return false;
+		if (lokacija == null) {
+			if (other.lokacija != null)
+				return false;
+		} else if (!lokacija.equals(other.lokacija))
+			return false;
+		if (naziv == null) {
+			if (other.naziv != null)
+				return false;
+		} else if (!naziv.equals(other.naziv))
+			return false;
+		if (status != other.status)
+			return false;
+		if (tip != other.tip)
+			return false;
+		return true;
+	}
 
 	public String getNaziv() {
 		return naziv;
