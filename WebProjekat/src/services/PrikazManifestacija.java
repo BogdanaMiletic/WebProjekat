@@ -137,7 +137,9 @@ public class PrikazManifestacija {
 		// SORTIRANJE
 		if(sortiranje.equals("NAZIV")) {
 			manifestacijeRezultati = this.sortiranjePoNazivu(manifestacijeRezultati);
-
+		}
+		else if(sortiranje.equals("DATUM")) {
+			manifestacijeRezultati = this.sortiranjePoDatumu(manifestacijeRezultati);
 		}
 		
 		
@@ -147,6 +149,7 @@ public class PrikazManifestacija {
 	}
 	
 	//********** SORTIRANJE **********
+	// sortiranje po nazivu
 	private ArrayList<Manifestacija> sortiranjePoNazivu(ArrayList<Manifestacija> manifestacije) {
 		
 		Collections.sort(manifestacije, new Comparator<Manifestacija>() {
@@ -155,6 +158,20 @@ public class PrikazManifestacija {
 			public int compare(Manifestacija m1, Manifestacija m2) {
 				
 				return m1.getNaziv().compareToIgnoreCase(m2.getNaziv());
+			}
+			
+		});
+		
+		return manifestacije;
+	}
+	// sortiranje po datumu
+	private ArrayList<Manifestacija> sortiranjePoDatumu(ArrayList<Manifestacija>manifestacije){
+		Collections.sort(manifestacije, new Comparator<Manifestacija>() {
+			
+			@Override
+			public int compare(Manifestacija m1, Manifestacija m2) {
+				
+				return m2.getDatumIvremeOdrzavanja().compareTo(m1.getDatumIvremeOdrzavanja());
 			}
 			
 		});

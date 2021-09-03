@@ -78,9 +78,7 @@ $(document).ready(function(){
 				
 				/*for(d of data){
 					console.log(JSON.stringify(d));
-				}*/
-				//>> AKO JE IZABRANO NEKO  SORTIRANJE DODATNO SORTIRATI OVE REZULTATE PRETRAGE
-				
+				}*/				
 				
 				//sad treba prikazati ovo sto je pronadjeno..>>>>
 				prikaziRezultatePrtrage(podaciZaPrikaz);
