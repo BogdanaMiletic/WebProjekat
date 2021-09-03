@@ -27,6 +27,7 @@ $(document).ready(function(){
 					//sad redu u kojem se trenutno nalazimo dodajemo novu kolonu sa karticom
 					$("#row" + brojacRedova).append( 
 							"<div class=\"column\"> " +
+									"<a href=\"pojedinacnaManifestacija.html?naziv="+ podatak.naziv + "&datum="+podatak.datumIvremeOdrzavanja.year+"-"+podatak.datumIvremeOdrzavanja.monthValue+"-"+podatak.datumIvremeOdrzavanja.dayOfMonth +"  " +podatak.datumIvremeOdrzavanja.hour+":"+podatak.datumIvremeOdrzavanja.minute +"\">" +
 									" <div class=\"card\">" +
 									"	 <p style=\"font-size:25px;\">"+ podatak.naziv +" </p> " +
 										"<hr>" +
@@ -36,9 +37,10 @@ $(document).ready(function(){
 										"<p>Datum odrzavanja: " + podatak.datumIvremeOdrzavanja.dayOfMonth+"."+podatak.datumIvremeOdrzavanja.monthValue+"."+podatak.datumIvremeOdrzavanja.year +".  " +podatak.datumIvremeOdrzavanja.hour+":"+podatak.datumIvremeOdrzavanja.minute +"h</p>"+
 										"<p style=\"font-size:20px\"> Cena: " + podatak.cenaRegularKarte +" din.</p>"+
 										"</div>" +
+									"</a>" +
+									
 							" </div>");
 				}
 			}
-	);
-	
+	);	
 });

@@ -9,17 +9,14 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import dao.Manifestacije;
-import model.Kupac;
 import model.Manifestacija;
 import model.Manifestacija.TipManifestacije;
 
@@ -55,6 +52,38 @@ public class PrikazManifestacija {
 		
 		return manifestacijeSortirane;
 	}
+	
+	/*
+	 * metoda za vracanje konkretne manifestacije
+	 */
+	@GET
+	@Path("/{naziv}/{datum}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Manifestacija pronadjiManifestaciju(@PathParam("naziv")String naziv, @PathParam("datum")String datum) {
+		//iz svih manifestacija vracamo onu ciji se podaci poklapaju sa parametrom putanje
+		//prvo vrsimo redefinisanje datuma tako da dodamo 0 kod meseci i dana ako je jednocifren broj >> da bi bilo u skladu sa formatom
+		System.out.println("Datum je:                :               " + datum );
+		String podela[] = datum.split("\\ ");
+		System.out.println("POdela: " + podela[2]);
+		String podela2[] = (podela[0]).split("\\-");
+		if(podela2[1].length() == 1)
+			podela2[1] = "0"+podela2[1];
+		if(podela2[2].length() == 1)
+			podela2[2] = "0" + podela2[2];
+		String noviDatum = podela2[0] +"-" + podela2[1]+"-"+ podela2[2] + " " + podela[2];
+				
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime datumParsiran = LocalDateTime.parse(noviDatum, format);
+		
+		for(Manifestacija m : this.getManifestacije().getManifestacije()) {
+			if(m.getNaziv().equals(naziv) && m.getDatumIvremeOdrzavanja().equals(datumParsiran))
+				return m;
+		}
+		
+		return null;
+	}
+	
+	
 	
 	/*
 	 * metoda za pretragu manifestacija po raznim kriterijumima.
