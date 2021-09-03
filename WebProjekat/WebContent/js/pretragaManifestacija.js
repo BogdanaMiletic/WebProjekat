@@ -35,6 +35,15 @@ $(document).ready(function(){
 		console.log("Promenjena vrednost na: " + $("input[name=do]").val());
 	})
 	
+	//******** SORTIRANJE >> proveravamo da li je izabrano ************
+	let sortiranjeIzabrano = "";
+	
+	$("select[name=sortiranjeManifestacija]").change(function(event, value){
+		sortiranjeIzabrano = $(this).val(); 
+		console.log("------------Izabrano je sortiranje: " + sortiranjeIzabrano);
+
+	})
+	
 	
 	
 	//kad se potvrdi pretraga manifestacija klikom na submit
@@ -61,22 +70,22 @@ $(document).ready(function(){
 	//>> sad serveru saljemo te podatke i vrsimo objedinjenu pretragu..
 		$.get(
 			"../WebProjekat/rest/manifestacije/pretraga?naziv="+naziv+"&lokacija=" +lokacija+"&datumOd="+datumOd+"&datumDo="+
-			datumDo+"&cenaOd="+cenaOd+"&cenaDo="+cenaDo,
+			datumDo+"&cenaOd="+cenaOd+"&cenaDo="+cenaDo +"&sortiranje="+sortiranjeIzabrano,
 			function(data,status){
 				console.log("***********REZULTATI PRETRAGE SU************");
-					
-				for(d of data){
+				
+				let podaciZaPrikaz = data;
+				
+				/*for(d of data){
 					console.log(JSON.stringify(d));
-				}
+				}*/
+				//>> AKO JE IZABRANO NEKO  SORTIRANJE DODATNO SORTIRATI OVE REZULTATE PRETRAGE
+				
 				
 				//sad treba prikazati ovo sto je pronadjeno..>>>>
-				prikaziRezultatePrtrage(data);
+				prikaziRezultatePrtrage(podaciZaPrikaz);
 			}
 		);
-		
-		
-		
-		
 		event.preventDefault();
 	});
 	
@@ -164,4 +173,16 @@ function prikaziRezultatePrtrage(data){
 							"</div>" +
 				" </div>");
 	}	
+}
+
+function sortiranjePoNazivuManifestacije(podaciZaSortiranje){
+	$.get("../WebProjekat/rest/manifestacije/sortiranjePoNazivu", //ovde prosledi podatke za soritiranje
+			JSON.stringify(podaciZaSortiranje),
+			function(data, status){
+				for(m of data){
+					console.log(JSON.stringify(m));
+				}
+				return data;
+	})
+	
 }

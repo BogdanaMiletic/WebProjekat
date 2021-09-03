@@ -1,7 +1,5 @@
 package services;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,13 +9,17 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import dao.Manifestacije;
+import model.Kupac;
 import model.Manifestacija;
 
 @Path("manifestacije")
@@ -62,7 +64,8 @@ public class PrikazManifestacija {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Manifestacija> pretragaManifestacija(@QueryParam("naziv")String naziv, @QueryParam("lokacija")String lokacija,
 			@QueryParam("datumOd")String datumOd, @QueryParam("datumDo")String datumDo, 
-			@QueryParam("cenaOd") String cenaOd, @QueryParam("cenaDo")String cenaDo){
+			@QueryParam("cenaOd") String cenaOd, @QueryParam("cenaDo")String cenaDo,
+			@QueryParam("sortiranje") String sortiranje){
 		
 		ArrayList<Manifestacija> manifestacijeRezultati = new ArrayList<>();
 		manifestacijeRezultati.addAll(this.getManifestacije().getManifestacije());
@@ -119,7 +122,6 @@ public class PrikazManifestacija {
 		
 		if(!cenaOd.equals("") || !cenaDo.equals("")) {
 			//radimo pretragu po ceni.
-			System.out.println("UPaliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 			double cenaOdKast = Double.parseDouble(cenaOd);
 			double cenaDoKast = Double.parseDouble(cenaDo);
 			
@@ -132,8 +134,34 @@ public class PrikazManifestacija {
 					}
 			}
 		}
+		// SORTIRANJE
+		if(sortiranje.equals("NAZIV")) {
+			manifestacijeRezultati = this.sortiranjePoNazivu(manifestacijeRezultati);
+
+		}
+		
+		
+		
+		
 		return manifestacijeRezultati;
 	}
+	
+	//********** SORTIRANJE **********
+	private ArrayList<Manifestacija> sortiranjePoNazivu(ArrayList<Manifestacija> manifestacije) {
+		
+		Collections.sort(manifestacije, new Comparator<Manifestacija>() {
+			
+			@Override
+			public int compare(Manifestacija m1, Manifestacija m2) {
+				
+				return m1.getNaziv().compareToIgnoreCase(m2.getNaziv());
+			}
+			
+		});
+		
+		return manifestacije;
+	}
+	
 	
 	
 	private Manifestacije getManifestacije() {
