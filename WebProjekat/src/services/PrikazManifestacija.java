@@ -144,6 +144,9 @@ public class PrikazManifestacija {
 		else if(sortiranje.equals("CENA")) {
 			manifestacijeRezultati = this.sortiranjePoCeni(manifestacijeRezultati);
 		}
+		else if(sortiranje.equals("LOKACIJA")) {
+			manifestacijeRezultati = this.sortiranjePoLokaciji(manifestacijeRezultati);
+		}
 		
 		
 		
@@ -191,6 +194,18 @@ public class PrikazManifestacija {
 					return 1;
 					else
 						return -1;
+			}
+			
+		});
+		return manifestacije;
+	}
+	//sortiranje prema lokaciji
+	private ArrayList<Manifestacija> sortiranjePoLokaciji(ArrayList<Manifestacija> manifestacije){
+		Collections.sort(manifestacije, new Comparator<Manifestacija>() {
+
+			@Override
+			public int compare(Manifestacija o1, Manifestacija o2) {
+				return o1.getLokacija().getAdresa().compareToIgnoreCase(o2.getLokacija().getAdresa());
 			}
 			
 		});
