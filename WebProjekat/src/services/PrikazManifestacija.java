@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.Manifestacije;
 import model.Kupac;
 import model.Manifestacija;
+import model.Manifestacija.TipManifestacije;
 
 @Path("manifestacije")
 public class PrikazManifestacija {
@@ -65,7 +66,7 @@ public class PrikazManifestacija {
 	public ArrayList<Manifestacija> pretragaManifestacija(@QueryParam("naziv")String naziv, @QueryParam("lokacija")String lokacija,
 			@QueryParam("datumOd")String datumOd, @QueryParam("datumDo")String datumDo, 
 			@QueryParam("cenaOd") String cenaOd, @QueryParam("cenaDo")String cenaDo,
-			@QueryParam("sortiranje") String sortiranje){
+			@QueryParam("sortiranje") String sortiranje, @QueryParam("filtriranjeTip")String tipFiltriranje){
 		
 		ArrayList<Manifestacija> manifestacijeRezultati = new ArrayList<>();
 		manifestacijeRezultati.addAll(this.getManifestacije().getManifestacije());
@@ -148,6 +149,9 @@ public class PrikazManifestacija {
 			manifestacijeRezultati = this.sortiranjePoLokaciji(manifestacijeRezultati);
 		}
 		
+		// FILTRIRANJE
+		System.out.println("tip je: " + tipFiltriranje);
+		manifestacijeRezultati = filtriranjePremaTipu(manifestacijeRezultati, tipFiltriranje);
 		
 		
 		
@@ -212,7 +216,31 @@ public class PrikazManifestacija {
 		return manifestacije;
 	}
 	
-	
+	//************ FILTRIRANJE **************
+	//filtriranje manifesatacija prema tipu 
+	private ArrayList<Manifestacija> filtriranjePremaTipu(ArrayList<Manifestacija> manifestacije, String tipFiltriranje){
+		ArrayList<Manifestacija> filtrirano = new ArrayList<Manifestacija>();
+		
+		if(tipFiltriranje.equals("KONCERT")) {
+			for(Manifestacija m : manifestacije) {
+				if(m.getTip() == Manifestacija.TipManifestacije.KONCERT)
+					filtrirano.add(m);
+			}
+		}
+		else if(tipFiltriranje.equals("POZORISTE")) {
+			for(Manifestacija m : manifestacije) {
+				if(m.getTip() == TipManifestacije.POZORISTE)
+					filtrirano.add(m);
+			}
+		}
+		else if(tipFiltriranje.equals("FESTIVAL")) {
+			for(Manifestacija m : manifestacije) {
+				if(m.getTip() == TipManifestacije.FESTIVAL)
+					filtrirano.add(m);
+			}
+		}
+		return filtrirano;
+	}
 	
 	private Manifestacije getManifestacije() {
 		Manifestacije manifestacije = (Manifestacije) ctx.getAttribute("manifestacije");

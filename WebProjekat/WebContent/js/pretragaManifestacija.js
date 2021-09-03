@@ -43,6 +43,13 @@ $(document).ready(function(){
 		console.log("------------Izabrano je sortiranje: " + sortiranjeIzabrano);
 
 	})
+	let filtriranjeTipIzabrano = "";
+	
+	$("select[name=filtriranjePremaTipu]").change(function(event, value){
+		filtriranjeTipIzabrano = $(this).val();
+		console.log("------------Izabrano je filtriranje tipa: " + filtriranjeTipIzabrano);
+
+	})
 	
 	
 	
@@ -70,7 +77,7 @@ $(document).ready(function(){
 	//>> sad serveru saljemo te podatke i vrsimo objedinjenu pretragu..
 		$.get(
 			"../WebProjekat/rest/manifestacije/pretraga?naziv="+naziv+"&lokacija=" +lokacija+"&datumOd="+datumOd+"&datumDo="+
-			datumDo+"&cenaOd="+cenaOd+"&cenaDo="+cenaDo +"&sortiranje="+sortiranjeIzabrano,
+			datumDo+"&cenaOd="+cenaOd+"&cenaDo="+cenaDo +"&sortiranje="+sortiranjeIzabrano+"&filtriranjeTip="+filtriranjeTipIzabrano,
 			function(data,status){
 				console.log("***********REZULTATI PRETRAGE SU************");
 				
