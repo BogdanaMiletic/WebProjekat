@@ -1,0 +1,37 @@
+@charset "ISO-8859-1";
+
+#prikazManifestacije{
+	/*border: 1px solid black;*/
+	border-radius: 25px;
+	padding: 20px;
+	text-alingment:center;
+	height:500px;
+	width:800px;
+	margin:auto;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  	background-color: #f1f1f1;
+}
+#slikaDiv{
+	float:left;
+	width:50%;
+}
+#infoDiv{
+	float:left;
+	width:50%;
+}
+/* prikaz za lokaciju..*/
+#lokacija{
+	background-color:white;
+	height:90px;
+}
+
+#mapaLokacijeSlika{
+	float:left;
+	width: 40%;
+	height:100%;
+}
+#adresa{
+	float:left;
+	width:60%;
+	height:100%;
+}

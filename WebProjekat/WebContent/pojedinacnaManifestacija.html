@@ -5,8 +5,38 @@
 <title>Manifestacija</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/pojedinacniPrikazManifestacije.js"></script>
+<link rel="stylesheet"  href="css/pojedinacniPrikazManifestacije.css"></link>
 </head>
 <body>
 <p>Ovo je pojedinacna manifestacija...</p>
+
+<div id="prikazManifestacije">
+	<p id="naziv" style="font-size:30px;"></p>
+	<label id="tip"></label>
+	<hr>
+	
+	<div id="slikaDiv">
+		<img src="slike/pozoriste.jpg" alt="slika postera" height="350px" width="350px"/>
+	</div>
+	
+	<div id="infoDiv">
+		<p id="brojMesta"></p>
+		<p id= "preostaliBrojKarata"></p>
+		<p id="datum"></p>
+		<p id="status"></p>
+		<p id="cena"></p>
+		<p id="ocena">Ocena manifestacije: #ako postoji prikazati</p>
+		
+		<div id="lokacija">
+			<img src="slike/mapa.jpg" id="mapaLokacijeSlika" alt="slika mape" />
+			<div>
+				<p id="adresa" style="font-weight:bold"></p>
+				<p id="grad"></p>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
 </body>
 </html>
