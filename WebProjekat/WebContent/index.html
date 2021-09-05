@@ -7,6 +7,8 @@
 <script type="text/javascript" src="js/prikazManifestacija.js"></script>
 <script type="text/javascript" src="js/pretragaManifestacija.js"></script>
 <link rel="stylesheet" href="css/kartice.css"></link>
+<link rel="stylesheet" href="css/heder.css"></link>
+
 
 <script>
 	//ucitavanje hedera stranice
@@ -20,17 +22,19 @@
 
 <div id="heder">
 </div>
-<h1> Ovo je web prodavnica karata...</h1>
 
-<div>
-<a href="logovanje.html" name="logovanje">logovanje</a>
+<div id="zaglavlje">
+<a href="logovanje.html" class="dugmic" name="logovanje">Loguj se</a>
+<a href="registracijaKupaca.html" class="dugmic" name="registracija">Registruj se</a>
+<!-- <a href="logovanje.html" name="logovanje" style="text-decoration: none;">logovanje</a>
 <br/>
 <a href="registracijaKupaca.html" name="registracija"> registracija</a>
 <br/>
 <a href = "testiranje.html">test</a>
-<br/>
+<br/>--->
 
 </div>
+<hr>
 
 <div id="pretragaManifestacija">
 <p style="font-size:25px;"> Pretraga manifestacija </p>
@@ -101,7 +105,8 @@
 		<label>Prikaz nerasprodatih manfiestacija: </label>
 		<input type = "radio" value="prikaziNerasprodateManifestacije">
 	</div>
-	<input type="submit" value="pretrazi manifestacije" style="width: 100%;">
+	<br/>
+	<input type="submit" class="dugmic" value="pretrazi manifestacije" style="width: 100%;">
 	
 	
 </form>
