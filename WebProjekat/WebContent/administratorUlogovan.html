@@ -4,12 +4,98 @@
 <meta charset="ISO-8859-1">
 <title>adminMainPage</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/prikazManifestacija.js"></script>
+<script type="text/javascript" src="js/pretragaManifestacija.js"></script>
+<link rel="stylesheet" href="css/kartice.css"></link>
 
 </head>
 <body>
-<p> Uspesno ste ulogovani kao administrator...</p>
-<a href="profilKorisnika.html"> Profil korisnika</a>
-<a href="registracijaProdavaca.html">registrujProdavca</a>
+<div>
+	<p> Uspesno ste ulogovani kao administrator...</p>
+	<a href="profilKorisnika.html"> Profil korisnika</a>
+	<a href="registracijaProdavaca.html">registrujProdavca</a>
+</div>
+
+
+<div id="pretragaManifestacija">
+<p style="font-size:25px;"> Pretraga manifestacija </p>
+<form id="formaZaPretraguManifestacija">
+	<div>
+		<label for="nazivPretraga">Naziv manifestacije: </label>
+		<input type="text" name="nazivPretraga">
+	</div>
+	<br/>
+	<div>
+		<label for="lokacijaPretraga">Lokacija: </label>
+		<input type="text" name="lokacijaPretraga">
+	</div>
+	<br/>
+	<div>
+		<label>Datum odrzavanja manifestacije: </label>
+		<br/>
+		<label>od: </label>
+		<input type="datetime-local" name="odDatum"  >
+		<br/>
+		<label>do: </label>
+		<input type="datetime-local" name="doDatum" >
+	</div>
+	<br/>
+	<div id="cenaOdDo">
+		<label>Cena: </label>
+		<br/>
+		<label>od: </label>
+		
+		<input type="range" name="od">
+		<label name="odPasus" > </label>
+		
+		
+		<br/>
+		<label>do: </label>
+		<input type="range" name="do">
+		<label name="doPasus" > </label>
+		
+	</div>
+	<br/>
+	<div>
+		<label>Sortiranje manifestacija: </label>
+		
+		<select name="sortiranjeManifestacija">
+			<option value="none">izaberi sortiranje</option>
+			<option value="NAZIV">po nazivu</option>
+			<option value="DATUM">po datumu i vremenu </option>
+			<option value="CENA">po ceni</option>
+			<option value="LOKACIJA">po lokaciji</option>
+		</select>
+	</div>
+	
+	<br/>
+	<div>
+		<label>Filtriranje prema tipu manifestacije: </label>
+		
+		<select name="filtriranjePremaTipu">
+			<option value="none">izaberi filter</option>
+			<option value="KONCERT">koncerti</option>
+			<option value="POZORISTE">pozoriste </option>
+			<option value="FESTIVAL">festivali</option>
+		</select>
+	</div>
+	
+	<br/>
+	
+	<div>
+		<label>Prikaz nerasprodatih manfiestacija: </label>
+		<input type = "radio" value="prikaziNerasprodateManifestacije">
+	</div>
+	<input type="submit" value="pretrazi manifestacije" style="width: 100%;">
+	
+	
+</form>
+
+</div>
+<!-- -ovde prikazujemo deo sa prikazanom listom svih manifestacija koje su aktivne -->
+<div id="prikazManifestacija" >
+	
+</div>
 
 </body>
 </html>

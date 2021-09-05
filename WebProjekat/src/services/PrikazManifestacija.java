@@ -268,6 +268,9 @@ public class PrikazManifestacija {
 					filtrirano.add(m);
 			}
 		}
+		else {
+			filtrirano = manifestacije;
+		}
 		return filtrirano;
 	}
 	

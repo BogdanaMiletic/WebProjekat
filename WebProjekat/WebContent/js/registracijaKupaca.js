@@ -98,6 +98,9 @@ $(document).ready(function(){
 			
 			function(data, status){
 				console.log("Status je: " + status);
+				console.log("Korisnik je registrovan...");
+				$("p[name=poruka]").text("Uspesno ste se registrovali."); 
+				$("div[name=porukaUputstvo]").append("<a href=\"logovanje.html\">Uloguj se</a>")
 			}
 					
 			);
