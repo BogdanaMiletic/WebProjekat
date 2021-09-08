@@ -5,11 +5,13 @@ $(document).ready(function(){
 	
 	let naziv = parametriPretrage.get("naziv")
 	let datum = parametriPretrage.get("datum");
+	let adresa = parametriPretrage.get("lokacija");
 	console.log(naziv);
 	console.log(datum);
+	console.log(adresa);
 	
 	//upucuejemo get zahtev da pronadjemo ovu manifestaciju
-	$.get("../WebProjekat/rest/manifestacije/" + naziv + "/" + datum,
+	$.get("../WebProjekat/rest/manifestacije/" + naziv + "/" + datum + "/" + adresa,
 		function(data, status){
 			console.log(JSON.stringify(data));
 			
@@ -19,7 +21,7 @@ $(document).ready(function(){
 			// za poster mozemo automatski da postavimo atribut sa putanjom..$("#poster").
 			$("#brojMesta").text("Broj mesta: " + data.brojMesta);
 			$("#preostaliBrojKarata").text("Preostali broj karata: ");
-			$("#datum").text("Datum i vreme odrzavanja: " +  data.datumIvremeOdrzavanja.dayOfMonth+"."+data.datumIvremeOdrzavanja.monthValue+"."+data.datumIvremeOdrzavanja.year +".  " +data.datumIvremeOdrzavanja.hour+":"+data.datumIvremeOdrzavanja.minute +"h");
+			//$("#datum").text("Datum i vreme odrzavanja: " +  data.datumIvremeOdrzavanja.dayOfMonth+"."+data.datumIvremeOdrzavanja.monthValue+"."+data.datumIvremeOdrzavanja.year +".  " +data.datumIvremeOdrzavanja.hour+":"+data.datumIvremeOdrzavanja.minute +"h");
 			$("#cena").text("Cena regular karte: " + data.cenaRegularKarte);
 			$("#status").text("Status manifestaijce: " + data.status);
 			
@@ -27,6 +29,16 @@ $(document).ready(function(){
 			$("#adresa").text(adresaSplit[0] );
 			$("#grad").text(adresaSplit[1] +" "+ adresaSplit[2]);
 			
+			//ukoliko je ulogovani korisnik sa ulogom prodavac>> omoguci IZMENU PODATAKA O MANIFESTACIJAMA
+			/*$.get(
+				"../WebProjekat/rest/korisnici/trenutnoUlogovan",
+				function( data,status){
+					if(data.uloga == Korisnik.Uloga.PRODAVAC){
+						console.log("Ulogovan je prodavac...");
+						$("#prikazManifestacije").append("<a href=\"izmenaPodatakaOmanifestaciji.html?naziv="+data.naziv + "&datum="+data.datumIvremeOdrzavanja.year+"-"+data.datumIvremeOdrzavanja.monthValue+"-"+data.datumIvremeOdrzavanja.dayOfMonth +"  " +data.datumIvremeOdrzavanja.hour+":"+data.datumIvremeOdrzavanja.minute +"lokacija="+data.lokacija.adresa+"\">Izmeni podatke o manifestaciji</a>")
+					}
+				}
+			);*/
 		}
 	);
 	

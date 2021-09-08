@@ -23,11 +23,14 @@ $(document).ready(function(){
 				else{
 					console.log("Ulogovani ste kao korisnik " + data.ime + " " + data.prezime + ".\nUloga korisnika je: " + data.uloga + ".");
 					
+					
 					if(data.uloga == "KUPAC"){
 						window.location.href="ulogovanKorisnik.html";
 					}
 					else if(data.uloga == "PRODAVAC"){
-						window.location.href="prodavacUlogovan.html";
+						//window.location.href="prodavacUlogovan.html";
+						console.log("*********** KORINIK: " + JSON.stringify(data));
+						console.log(data);
 					}
 					else if(data.uloga == "ADMINISTRATOR"){
 						window.location.href="administratorUlogovan.html";

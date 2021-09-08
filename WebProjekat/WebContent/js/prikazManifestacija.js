@@ -24,22 +24,32 @@ $(document).ready(function(){
 					console.log("POjedinacno: " + JSON.stringify(podatak));
 					//prikazujemo elemente kao pojedinacne pasuse koje dodajemo
 					
+					//datum formatiran prikaz
+					console.log("*******DATUM:  " + podatak.datumIvremeOdrzavanja);
+					let datumIvremeSplit = (podatak.datumIvremeOdrzavanja).split("T");
+					let datumSplit = datumIvremeSplit[0].split("-");
+					let datumFormatiran = datumSplit[2]+"."+datumSplit[1]+"."+datumSplit[0]+". " + datumIvremeSplit[1];
+						
+						
 					//sad redu u kojem se trenutno nalazimo dodajemo novu kolonu sa karticom
 					$("#row" + brojacRedova).append( 
 							"<div class=\"column\"> " +
-									"<a href=\"pojedinacnaManifestacija.html?naziv="+ podatak.naziv + "&datum="+podatak.datumIvremeOdrzavanja.year+"-"+podatak.datumIvremeOdrzavanja.monthValue+"-"+podatak.datumIvremeOdrzavanja.dayOfMonth +"  " +podatak.datumIvremeOdrzavanja.hour+":"+podatak.datumIvremeOdrzavanja.minute +"\">" +
+									"<a href=\"pojedinacnaManifestacija.html?naziv="+ podatak.naziv + "&datum="+ podatak.datumIvremeOdrzavanja +"&lokacija="+ podatak.lokacija.adresa + "\">" +
 									" <div class=\"card\">" +
 									"	 <p style=\"font-size:25px;\">"+ podatak.naziv +" </p> " +
 										"<hr>" +
 										"<p>" + podatak.tip + "</p>" +
 										"<p> Lokacija: " + podatak.lokacija.adresa +"</p>"+
 										"<img src=\"slike/pozoriste.jpg\" alt=\"slika pozorisnog plakata\" height=\"200px\" width=\"200px\">"+
-										"<p>Datum odrzavanja: " + podatak.datumIvremeOdrzavanja.dayOfMonth+"."+podatak.datumIvremeOdrzavanja.monthValue+"."+podatak.datumIvremeOdrzavanja.year +".  " +podatak.datumIvremeOdrzavanja.hour+":"+podatak.datumIvremeOdrzavanja.minute +"h</p>"+
+										"<p>Datum odrzavanja: " + datumFormatiran + "</p>"+
 										"<p style=\"font-size:20px\"> Cena: " + podatak.cenaRegularKarte +" din.</p>"+
 										"</div>" +
 									"</a>" +
 									
 							" </div>");
+					
+					//	"<p>Datum odrzavanja: " + podatak.datumIvremeOdrzavanja.dayOfMonth+"."+podatak.datumIvremeOdrzavanja.monthValue+"."+podatak.datumIvremeOdrzavanja.year +".  " +podatak.datumIvremeOdrzavanja.hour+":"+podatak.datumIvremeOdrzavanja.minute +"h</p>"+
+
 				}
 			}
 	);	
