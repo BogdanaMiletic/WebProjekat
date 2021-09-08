@@ -2,6 +2,10 @@ package model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class Manifestacija {
 	
 	public enum TipManifestacije{
@@ -13,6 +17,10 @@ public class Manifestacija {
 	private String naziv;
 	private TipManifestacije tip;
 	private int brojMesta;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime datumIvremeOdrzavanja;
 	private double cenaRegularKarte;
 	private Status status;

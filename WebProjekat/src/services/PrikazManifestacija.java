@@ -1,5 +1,6 @@
 package services;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,12 +10,17 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.Manifestacije;
 import model.Manifestacija;
@@ -273,6 +279,33 @@ public class PrikazManifestacija {
 		}
 		return filtrirano;
 	}
+	
+	@POST
+	@Path("/dodajManifestaciju")
+	public void dodajNovuManifestaciju(String m) throws JsonParseException, JsonMappingException, IOException {
+		System.out.println("Pogodjeniii smooooooooooooo: " + m);
+		try {
+			Manifestacija manifestacija = (Manifestacija) new ObjectMapper().readValue(m, Manifestacija.class);
+			//System.out.println("Parsirano: " + manifestacija.toString());
+			
+			//dodajemo manifestaicju u listu
+			this.getManifestacije().getManifestacije().add(manifestacija);
+			
+			this.getManifestacije().upisiSveManifestacije(ctx.getRealPath(""));
+			
+			System.out.println("******************** dodate manifestaicje *******************");
+			
+			for(Manifestacija m1 : this.getManifestacije().getManifestacije()) {
+				System.out.println(m1.toString());
+				System.out.println("--------------------------------------");
+			}
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	
 	
 	private Manifestacije getManifestacije() {
 		Manifestacije manifestacije = (Manifestacije) ctx.getAttribute("manifestacije");

@@ -59,6 +59,13 @@ public class LogovanjeServis {
 		return sviKorisnici.getKorisnici();
 	}
 	
+	@GET
+	@Path("/trenutnoUlogovan")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Korisnik koJeTrenutnoUlogovan() {
+		return (Korisnik) ctx.getAttribute("trenutniKorisnik");
+	}
+	
 	@POST
 	@Path("/testiranje")
 	public void testiranje(String podatak) throws IOException {

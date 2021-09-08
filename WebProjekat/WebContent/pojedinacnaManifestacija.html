@@ -6,9 +6,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/pojedinacniPrikazManifestacije.js"></script>
 <link rel="stylesheet"  href="css/pojedinacniPrikazManifestacije.css"></link>
+<link rel="stylesheet" href="css/heder.css"></link>
+
+
+<script>
+	//ucitavanje hedera stranice
+	$(function(){
+		$("#heder").load("heder.html");
+	});
+</script>
 </head>
 <body>
-<p>Ovo je pojedinacna manifestacija...</p>
+<div id="heder">
+</div>
+
+<hr>
 
 <div id="prikazManifestacije">
 	<p id="naziv" style="font-size:30px;"></p>

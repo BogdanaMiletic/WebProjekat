@@ -10,7 +10,7 @@ $(document).ready(function(){
 		console.log("Uneseno je korisicko ime: " + korisnickoIme + " " + lozinka);	
 		
 		
-		$.post("../WebProjekat/rest/korisnici/logovanje",
+		$.post("../WebProjekat/rest/korisnici/logovanje/",
 			korisnickoIme + "|" + lozinka,
 			function(data, status){
 				console.log("Status je: " + status);
@@ -27,7 +27,7 @@ $(document).ready(function(){
 						window.location.href="ulogovanKorisnik.html";
 					}
 					else if(data.uloga == "PRODAVAC"){
-						
+						window.location.href="prodavacUlogovan.html";
 					}
 					else if(data.uloga == "ADMINISTRATOR"){
 						window.location.href="administratorUlogovan.html";

@@ -7,14 +7,27 @@
 <script type="text/javascript" src="js/prikazManifestacija.js"></script>
 <script type="text/javascript" src="js/pretragaManifestacija.js"></script>
 <link rel="stylesheet" href="css/kartice.css"></link>
+<link rel="stylesheet" href="css/heder.css"></link>
+
+
+<script>
+	$(function(){
+		$("#heder").load("heder.html");
+	});
+</script>
 
 </head>
 <body>
-<div>
-	<p> Uspesno ste ulogovani kao obican korisnik...</p>
-	<a href="profilKorisnika.html"> Profil korisnika</a>
+
+<div id="heder">
 </div>
 
+<div id="zaglavlje">
+	<a href="profilKorisnika.html" class="dugmic"> Profil korisnika</a>
+
+</div>
+<hr>
+<p> Uspesno ste ulogovani kao obican korisnik...</p>
 
 <div id="pretragaManifestacija">
 <p style="font-size:25px;"> Pretraga manifestacija </p>
@@ -85,7 +98,8 @@
 		<label>Prikaz nerasprodatih manfiestacija: </label>
 		<input type = "radio" value="prikaziNerasprodateManifestacije">
 	</div>
-	<input type="submit" value="pretrazi manifestacije" style="width: 100%;">
+	<br/>
+	<input type="submit" class="dugmic" value="pretrazi manifestacije" style="width: 100%;font-size=20px;">
 	
 	
 </form>
