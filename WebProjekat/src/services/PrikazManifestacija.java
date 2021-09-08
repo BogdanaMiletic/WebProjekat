@@ -357,6 +357,10 @@ public class PrikazManifestacija {
 	
 			}
 		}
+		
+		//vrsimo upis nove liste izmenjenih manifestacija u fajl..
+		this.getManifestacije().upisiSveManifestacije(ctx.getRealPath(""));
+		
 		return mani;
 	}
 	
