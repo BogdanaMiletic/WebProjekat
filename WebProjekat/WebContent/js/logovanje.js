@@ -28,9 +28,8 @@ $(document).ready(function(){
 						window.location.href="ulogovanKorisnik.html";
 					}
 					else if(data.uloga == "PRODAVAC"){
-						//window.location.href="prodavacUlogovan.html";
-						console.log("*********** KORINIK: " + JSON.stringify(data));
-						console.log(data);
+						window.location.href="prodavacUlogovan.html";
+					
 					}
 					else if(data.uloga == "ADMINISTRATOR"){
 						window.location.href="administratorUlogovan.html";

@@ -9,8 +9,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -39,7 +41,10 @@ public class PrikazManifestacija {
 		Manifestacije manifestacijeSve = (Manifestacije)this.getManifestacije();
 		
 		//sad sortiramo te manifestacije tako da prvo budu one najskorije
-		List<Manifestacija> manifestacijeSortirane = (List)manifestacijeSve.getManifestacije();
+		//List<Manifestacija> manifestacijeSortirane = (List)manifestacijeSve.getManifestacije();
+		List<Manifestacija> manifestacijeSortirane = new ArrayList<>();
+		manifestacijeSortirane.addAll(manifestacijeSve.getManifestacije());
+		
 		Comparator poDatumuOdrzavanja = new Comparator() {
 		
 
@@ -61,11 +66,12 @@ public class PrikazManifestacija {
 	
 	/*
 	 * metoda za vracanje konkretne manifestacije
-	 */
+	*/
 	@GET
-	@Path("/{naziv}/{datum}/{lokacija}")
+	@Path("/{naziv}/{datum}/{lokacija}/{sirina}/{duzina}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manifestacija pronadjiManifestaciju(@PathParam("naziv")String naziv, @PathParam("datum")String datum, @PathParam("lokacija")String lokacija) {
+	public Manifestacija pronadjiManifestaciju(@PathParam("naziv")String naziv, @PathParam("datum")String datum, @PathParam("lokacija")String lokacija,
+			@PathParam("sirina")String sirina, @PathParam("duzina")String duzina) {
 		//iz svih manifestacija vracamo onu ciji se podaci poklapaju sa parametrom putanje
 		//prvo vrsimo redefinisanje datuma tako da dodamo 0 kod meseci i dana ako je jednocifren broj >> da bi bilo u skladu sa formatom
 		System.out.println("Datum je:                :               " + datum );
@@ -307,6 +313,51 @@ public class PrikazManifestacija {
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	@PUT
+	@Path("/izmeniManifestaciju/{geografskaSirina}/{geografskaDuzina}/{datum}")
+	//@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Manifestacija izmeniPodatkeManifestacije(@PathParam("datum")String datum, 
+			@PathParam("geografskaSirina")String geografskaSirina, @PathParam("geografskaDuzina") String geografskaDuzina, String noviPodaci ) throws JsonParseException, JsonMappingException, IOException {
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		
+		//formatiranje datuma
+		String datumNovi = datum.replace("T", " ");
+		String novi = datumNovi.substring(0, datumNovi.length()-3);
+		
+		LocalDateTime datumParsiran = LocalDateTime.parse(novi, format);
+		Manifestacija mani = null;
+		
+		Manifestacija izmenjeniPodaci = null;
+		try {
+			izmenjeniPodaci = new ObjectMapper().readValue(noviPodaci, Manifestacija.class);
+			System.out.println("Izmenjeni podaci su: " + izmenjeniPodaci.toString());
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		for(Manifestacija m : this.getManifestacije().getManifestacije()) {
+			if (m.getDatumIvremeOdrzavanja().equals(datumParsiran) && 
+					m.getLokacija().getGeografskaDuzina() == Double.parseDouble(geografskaDuzina)&&
+					m.getLokacija().getGeografskaSirina() == Double.parseDouble(geografskaSirina)) {
+				
+				System.out.println("Pronadjne: " + m.toString());
+				m.setNaziv(izmenjeniPodaci.getNaziv());
+				m.setTip(izmenjeniPodaci.getTip());
+				m.setBrojMesta(izmenjeniPodaci.getBrojMesta());
+				m.setCenaRegularKarte(izmenjeniPodaci.getCenaRegularKarte());
+				m.setDatumIvremeOdrzavanja(izmenjeniPodaci.getDatumIvremeOdrzavanja());
+				m.setStatus(izmenjeniPodaci.getStatus());
+				m.setLokacija(izmenjeniPodaci.getLokacija());
+				mani = m;
+	
+			}
+		}
+		return mani;
 	}
 	
 	

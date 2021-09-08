@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Izmena podataka o manifestaciji</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/izmenaPodatakaOmanifestaciji.js"></script>
+
+</head>
+<body>
+<p> Izmena podatka o manifestaciji </p>
+
+<form id="formaDodavanjeManifestacije" >
+<div>
+	<label>Naziv: </label>
+	<input type="text" name="naziv">
+	<p id="porukaNaziv" style="color:red;"></p>
+</div>
+
+<div>
+	<label>Tip manifestacije: </label>
+	<select id="tip">
+		<option value="none"></option>
+		<option value="KONCERT">KONCERT</option>
+		<option value="FESTIVAL">FESTIVAL</option>
+		<option value="POZORISTE">POZORISTE</option>
+	</select>
+	<p id="porukaTip" style="color:red;"></p>
+</div>
+
+<div>
+	<label>Broj mesta: </label>
+	<input type="text" name="brojMesta">
+	<p id="porukaBrojMesta" style="color:red;"></p>
+</div>
+
+<div>
+	<label>Datum i vreme odrzavanja: </label>
+	<input type="datetime-local" name="datum">
+	<p id="porukaDatum" style="color:red;"></p>
+</div>
+
+<div>
+	<label>Cena regular karte: </label>
+	<input type="text" name="cena">
+	<p id="porukaCena" style="color:red;"></p>
+</div>
+
+<div>
+	<label>Status: </label>
+	<input type="radio" name="aktivno" value="AKTIVNO">
+	<label>aktivno</label>
+	<input type="radio" name="neaktivno" value="NEAKTIVNO">
+	<label>neaktivno</label>
+	<p id="porukaStatus" style="color:red;"></p>
+	
+</div>
+ 
+
+<div>
+	<label>Lokacija: </label>
+	<br/>
+	<label>Geografska sirina: </label>
+	<input type="text" name="geografskaSirina">
+	<p id="porukaSirina" style="color:red;"></p>
+	
+	<br/>
+	<label>Geografska duzina: </label>
+	<input type="text" name="geografskaDuzina">
+	<p id="porukaDuzina" style="color:red;"></p>
+	
+	<br/>
+	<label>Adresa: </label>
+	<br/>
+	<label>Grad: </label>
+	<input type="text" name="grad">
+	<p id="porukaGrad" style="color:red;"></p>
+	<br/>
+	
+	<label>Ulica i broj: </label>
+	<input type="text" name="ulicaIbroj">
+	<p id="porukaUlica" style="color:red;"></p>
+	<br/>
+	
+	<label>Postanski broj: </label>
+	<input type="text" name="postanskiBroj">
+	<p id="porukaPosta" style="color:red;"></p>
+</div>
+	<label>Poster manifestacije: </label>
+	<input type="file" name="poster" >
+	<p id="porukaPoster"></p>
+	
+	<p id="poruka" style="color:red;"></p>
+	
+  	<input type="submit" class="dugmic" value="Izmeni podatke o manifestaciji"/>
+	
+</form>
+</body>
+</html>
