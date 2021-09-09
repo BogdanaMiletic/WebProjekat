@@ -40,6 +40,7 @@ $(document).ready(function(){
 					pregledRezervisanihKarata(data);
 					pretragaKarataPoNazivu(data);
 					pretragaKarataPoCeni(data);
+					pretragaKarataPoDatumu(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -194,6 +195,31 @@ function pretragaKarataPoCeni(korisnik){
 		event.preventDefault();
 	});
 }
+
+function pretragaKarataPoDatumu(korisnik){
+	$("#pretragaPoDatumu").submit(function(event){
+		let datumOd = $("input[name=datumOd]").val();
+		let datumDo = $("input[name=datumDo]").val();
+		console.log("Cena od :" + datumOd + ", cenaDo: "+ datumDo);
+		
+		//upucujemo zahtev za pretragu ..
+		
+		$.get(
+			"../WebProjekat/rest/karte/pretragaPoDatumu?datumOd=" + datumOd + "&datumDo=" + datumDo,
+			
+			function(data, status){
+				console.log("Status je: " + status);
+				console.log("******Pronadjeno je: " + JSON.stringify(data));
+				listaZaPrikaz(data, korisnik);
+				
+				
+			}
+		);
+		event.preventDefault();
+	});
+}
+
+
 	
 
 	

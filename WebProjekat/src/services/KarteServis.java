@@ -1,5 +1,7 @@
 package services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
@@ -62,6 +64,37 @@ public class KarteServis {
 		
 		return rezultati;
 	}
+	
+	@GET
+	@Path("pretragaPoDatumu")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> pretragaPoDatumu(@QueryParam("datumOd")String datumOd, @QueryParam("datumDo")String datumDo){
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		//datumu menjamo format
+		System.out.println("////////// " + datumOd);
+		String noviDatumOd = datumOd.replace("T", " ");
+		String noviDatumDo = datumDo.replace("T", " ");
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime datumOdPars = LocalDateTime.parse(noviDatumOd, format);
+		LocalDateTime datumDoPars = LocalDateTime.parse(noviDatumDo, format);
+
+
+		for(Karta k: this.getKarte().getKarte()) {
+			if(k.getDatumIvremeManifestaije().isBefore(datumDoPars) &&
+					k.getDatumIvremeManifestaije().isAfter(datumOdPars)) {
+				rezultati.add(k);
+			}
+			if(k.getDatumIvremeManifestaije().equals(datumDoPars) ||
+					k.getDatumIvremeManifestaije().equals(datumOdPars)) {
+				rezultati.add(k);
+			}
+		}
+		
+		return rezultati;
+	} 
 	
 	
 	public Karte getKarte() {
