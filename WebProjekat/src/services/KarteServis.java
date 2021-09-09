@@ -244,6 +244,24 @@ public class KarteServis {
 		return rezultati;
 	}
 	
+	/**** FILTRIRANJE PO TIPU *****/
+	@GET
+	@Path("/filterRegular")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> filtriranjeRegularKarti() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
+		for(Karta k : this.getKarte().getKarte()) {
+			if(k.getTipKarte() == Karta.TipKarte.REGULAR) {
+				rezultati.add(k);
+			}
+		}
+		return rezultati;
+	}
+	
+	
+	
 	
 	
 	public Karte getKarte() {

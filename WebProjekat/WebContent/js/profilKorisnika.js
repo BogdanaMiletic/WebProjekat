@@ -43,6 +43,7 @@ $(document).ready(function(){
 					pretragaKarataPoDatumu(data);
 					
 					sortiranje(data);
+					filtriranjePoTipu(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -422,6 +423,31 @@ function sortiranje(korisnik){
 		}
 		event.preventDefault();
 	});
+}
+
+function filtriranjePoTipu(korisnik){
+	$("#filtriranjeFormaTip").submit(function(event){
+		let izbor = $("#filterTip option:selected").val();
+		console.log("izabrano je: " + izbor);
+		//upucujemo zahtev za pretragu ..
+		
+		if(izbor == "REGULAR"){
+			$.get(
+					"../WebProjekat/rest/karte/filterRegular",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+			);
+		}
+		
+		event.preventDefault();
+	});
+	
 }
 
 
