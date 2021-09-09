@@ -44,6 +44,7 @@ $(document).ready(function(){
 					
 					sortiranje(data);
 					filtriranjePoTipu(data);
+					filtrirajPoStatusuKarte(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -476,6 +477,30 @@ function filtriranjePoTipu(korisnik){
 		event.preventDefault();
 	});
 	
+}
+
+function filtrirajPoStatusuKarte(korisnik){
+	$("#filtriranjeFormaStatus").submit(function(event){
+		let izbor = $("#filterStatus option:selected").val();
+		console.log("izabrano je: " + izbor);
+		//upucujemo zahtev za pretragu ..
+		
+		if(izbor == "REZERVISANA" || izbor == "ODUSTANAK"){
+			$.get(
+					"../WebProjekat/rest/karte/filterStatus?status="+ izbor,
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+			);
+		}
+		event.preventDefault();
+	})
+		
 }
 
 

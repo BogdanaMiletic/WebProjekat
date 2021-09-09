@@ -16,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 
 import dao.Karte;
 import model.Karta;
-import model.Manifestacija;
 
 @Path("karte")
 public class KarteServis {
@@ -284,6 +283,28 @@ public class KarteServis {
 		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
 		for(Karta k : this.getKarte().getKarte()) {
 			if(k.getTipKarte() == Karta.TipKarte.VIP) {
+				rezultati.add(k);
+			}
+		}
+		return rezultati;
+	}
+	
+	//******* FILTRIRANJE KARTI PREMA STATUSU *********
+	
+	@GET
+	@Path("/filterStatus")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> filtriranjePremaStatusu( @QueryParam("status") String status) {
+		
+		Karta.Status statusKartePoKomTrazimo = Karta.Status.ODUSTANAK;
+		if(status.equals("REZERVISANA")) {
+			statusKartePoKomTrazimo = Karta.Status.REZERVISANA;
+		}
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
+		for(Karta k : this.getKarte().getKarte()) {
+			if(k.getStatus() == statusKartePoKomTrazimo) {
 				rezultati.add(k);
 			}
 		}
