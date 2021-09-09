@@ -34,7 +34,7 @@ $(document).ready(function(){
 					$("#zaglavljePregledKarata").append("<a href=\"pregledRezervisanihKarata.html\"> pregled karata </a>")
 					
 					pregledRezervisanihKarata(data);
-					pretragaKarataPoNazivu();
+					pretragaKarataPoNazivu(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -145,7 +145,7 @@ function pregledRezervisanihKarata(korisnik){
 	}	
 }
 
-function pretragaKarataPoNazivu(){
+function pretragaKarataPoNazivu(korisnik){
 	$("#pretragaPoNazivu").submit(function(event){
 		let nazivZaPretragu = $("input[name=pretragaPoNazivu]").val();
 		console.log("Naziv je: " + nazivZaPretragu);
@@ -158,7 +158,7 @@ function pretragaKarataPoNazivu(){
 			function(data, status){
 				console.log("Status je: " + status);
 				console.log("Pronadjeno je: " + JSON.stringify(data));
-				listaZaPrikaz(data);
+				listaZaPrikaz(data, korisnik);
 				
 				
 			}
@@ -166,12 +166,12 @@ function pretragaKarataPoNazivu(){
 		event.preventDefault();
 	});
 	
-function listaZaPrikaz(listaKarata){
+function listaZaPrikaz(listaKarata, korisnik){
 	// ****brisemo sve prethodno prikazane karte
 	$(".redovi").hide();
 	
 	//sad dodajemo sve te karte u tabelu i prikazujemo ih kao redove
-	/*for( let karte of korisnik.sveKarte){
+	for( let karte of listaKarata){
 		if(karte.status == "REZERVISANA"){
 			$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
 					"" + "<td >" + karte.id + "</td>" +
@@ -183,11 +183,11 @@ function listaZaPrikaz(listaKarata){
 					"" + "<td >" + karte.tipKarte + "</td>" +
 					
 					" </tr>");
-		}*/
+		}
 	}	
 }
 
 
-
+}
 
 
