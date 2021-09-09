@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
+
 import model.Karta;
 import model.Korisnik;
 import model.Korisnik.Uloga;
@@ -19,6 +22,8 @@ import model.TipKupca.ImeTipa;
 
 public class Korisnici {
 	private ArrayList<Korisnik> korisnici = new ArrayList<>();
+	private Karte ucitaneKarte = null;
+	
 	
 	
 	public Korisnici() {
@@ -28,6 +33,9 @@ public class Korisnici {
 	public Korisnici(String putanja) {
 		BufferedReader in = null;
 		try {
+			//prvo ucitavamo karte iz fajla.. 
+			ucitaneKarte = new Karte(putanja); 
+					
 			File file = new File(putanja +"/utils"+"/korisnici.txt") ;
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
@@ -89,25 +97,55 @@ public class Korisnici {
 						
 					}
 					else if( podaci[6].trim().equalsIgnoreCase("kupac")) {
+						System.out.println("77777777777777777 Linija: " + linija);
 						//dodajemo kupca
 						uloga = Korisnik.Uloga.KUPAC;
 						//sve karte ucitavamo, sakupljeni bodovi, plus tip kupca...
 						Korisnik kup = new Korisnik(korisnickoIme, lozinka,ime, prezime, pol, datum,uloga);
 						//citamo za korisnika karte
+						String idKarata[] = podaci[7].split("\\,");
+						
+						
+						System.out.println("3333333333333333333333333 --- CITANJE KARATA UCITANIH IZ FAJLA");
+						for(Karta k: this.ucitaneKarte.getKarte()) {
+							System.out.println(k.toString());
+							System.out.println("----------------------");
+						}
 						ArrayList<Karta> karte = new ArrayList<>();
 						
+						for(String id : idKarata) {
+							
+							if(this.ucitaneKarte.getKarte().size() != 0) {
+								for(Karta k :this.ucitaneKarte.getKarte()) {
+									if(id.equals(k.getId())) {
+										karte.add(k);
+									}
+								}
+							}
+						}
 						
 						//????????????????? ovde odraditi izmenu da ucitava sve karte korisnika.....
 						//////////////?????????????????????????????????????????????????????
 						
-						
-						String [] nizKarata = podaci[7].split("\\,");
-						//sad iz karata treba pronaci te id-ijeve i ubaciti karte u listu..
-						
 						int brojBodova = Integer.parseInt(podaci[8]);
+						System.out.println("////////////////////////////8 "+ podaci[8] );
+						System.out.println("/////////////////////////"+ podaci[9]);
+						
+						TipKupca.ImeTipa tipKupca = null;
+						if(podaci[9].equals("BRONZANI")) {
+							tipKupca = TipKupca.ImeTipa.BRONZANI;
+						}
+						else if(podaci[9].equals("SREBRNI")) {
+							tipKupca = TipKupca.ImeTipa.SREBRNI;
+						}
+						else if(podaci[9].equals("ZLATNI")) {
+							tipKupca = TipKupca.ImeTipa.ZLATNI;
+						}
+						TipKupca tip = new TipKupca();
+						tip.setImeTipa(tipKupca);
 						
 						//ovde treba upisati tipKupca
-						Kupac kupac = new Kupac(kup, karte ,brojBodova, new TipKupca());
+						Kupac kupac = new Kupac(kup, karte ,brojBodova, tip);
 						
 						//??? moramo im postaviti dodatna polja..
 						korisnici.add(kupac);
@@ -230,4 +268,7 @@ public class Korisnici {
 	public void setKorisnici(ArrayList<Korisnik> korisnici) {
 		this.korisnici = korisnici;
 	}	
+	
+	
+	
 }

@@ -2,6 +2,10 @@ package model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class Karta {
 	public enum Status{
 		REZERVISANA, ODUSTANAK;
@@ -10,7 +14,11 @@ public class Karta {
 		VIP, REGULAR, FAN_PIT;
 	}
 	private String id;
-	private Manifestacija manifestacijaZaKojuJeRezervisana;
+	private String manifestacijaZaKojuJeRezervisana;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime datumIvremeManifestaije;
 	private double cena;
 	private String kupacImeIprezime;
@@ -21,7 +29,7 @@ public class Karta {
 		
 	}
 	
-	public Karta(String id, Manifestacija manifestacijaZaKojuJeRezervisana, LocalDateTime datumIvremeManifestaije,
+	public Karta(String id, String manifestacijaZaKojuJeRezervisana, LocalDateTime datumIvremeManifestaije,
 			double cena, String kupacImeIprezime, Status status, TipKarte tipKarte) {
 		this.id = id;
 		this.manifestacijaZaKojuJeRezervisana = manifestacijaZaKojuJeRezervisana;
@@ -38,10 +46,10 @@ public class Karta {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Manifestacija getManifestacijaZaKojuJeRezervisana() {
+	public String getManifestacijaZaKojuJeRezervisana() {
 		return manifestacijaZaKojuJeRezervisana;
 	}
-	public void setManifestacijaZaKojuJeRezervisana(Manifestacija manifestacijaZaKojuJeRezervisana) {
+	public void setManifestacijaZaKojuJeRezervisana(String manifestacijaZaKojuJeRezervisana) {
 		this.manifestacijaZaKojuJeRezervisana = manifestacijaZaKojuJeRezervisana;
 	}
 	public LocalDateTime getDatumIvremeManifestaije() {
