@@ -21,6 +21,13 @@ public class KarteServis {
 	ServletContext ctx;
 	
 	@GET
+	@Path("/sveKarte")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sveKarte(){
+		return this.getKarte().getKarte();
+	}
+	
+	@GET
 	@Path("/pretragaPoNazivu")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Karta> pretragaPoNazivu(@QueryParam("naziv")String naziv) {
@@ -32,6 +39,27 @@ public class KarteServis {
 				rezultati.add(k);
 			}
 		}
+		return rezultati;
+	}
+	
+	@GET
+	@Path("pretragaPoCeni")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> pretragaPoCeni(@QueryParam("cenaOd")String cenaOd, @QueryParam("cenaDo")String cenaDo){
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+
+		for(Karta k: this.getKarte().getKarte()) {
+			if(k.getCena() < Double.parseDouble(cenaDo) &&
+					k.getCena() > Double.parseDouble(cenaOd)) {
+				rezultati.add(k);
+			}
+			else if(k.getCena() == Double.parseDouble(cenaDo) ||
+						k.getCena() == Double.parseDouble(cenaOd)) {
+				rezultati.add(k);
+			}
+		}
+		
 		return rezultati;
 	}
 	

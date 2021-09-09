@@ -33,8 +33,13 @@ $(document).ready(function(){
 					//dodajemo u zaglavlje onda link za pregled rezervisanih karata
 					$("#zaglavljePregledKarata").append("<a href=\"pregledRezervisanihKarata.html\"> pregled karata </a>")
 					
+					// postavljamo minimalnu i maximalnu vrednost za pretragu 
+					//karata po ceni u range input polje automatski.
+					automatskoPostavljanjeVrednosti();
+					
 					pregledRezervisanihKarata(data);
 					pretragaKarataPoNazivu(data);
+					pretragaKarataPoCeni(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -165,6 +170,32 @@ function pretragaKarataPoNazivu(korisnik){
 		);
 		event.preventDefault();
 	});
+}
+
+function pretragaKarataPoCeni(korisnik){
+	$("#pretragaPoCeni").submit(function(event){
+		let cenaOd = $("input[name=cenaOd]").val();
+		let cenaDo = $("input[name=cenaDo]").val();
+		console.log("Cena od :" + cenaOd + ", cenaDo: "+ cenaDo);
+		
+		//upucujemo zahtev za pretragu ..
+		
+		$.get(
+			"../WebProjekat/rest/karte/pretragaPoCeni?cenaOd=" + cenaOd + "&cenaDo=" + cenaDo,
+			
+			function(data, status){
+				console.log("Status je: " + status);
+				console.log("******Pronadjeno je: " + JSON.stringify(data));
+				listaZaPrikaz(data, korisnik);
+				
+				
+			}
+		);
+		event.preventDefault();
+	});
+}
+	
+
 	
 function listaZaPrikaz(listaKarata, korisnik){
 	// ****brisemo sve prethodno prikazane karte
@@ -188,6 +219,76 @@ function listaZaPrikaz(listaKarata, korisnik){
 }
 
 
+function automatskoPostavljanjeVrednosti(){
+	//automatski postavljamo vrednosti range input polja za
+	//pretragu po ceni karata 
+	//minimalna vrednost je minimalna vrednost svih ucitanih karti koje postoje
+	//maximalna vrednost je maximalna vrednost svih karti koje postoje
+	
+	//preuzimamo se karte koje postoje
+	console.log("Upali smo u automatsko postavljanje...");
+	$.get(
+		"../WebProjekat/rest/karte/sveKarte",
+		function(data, status){
+			console.log(JSON.stringify(data));
+			let minCena = minimalnaCenaKarte(data);
+			let maxCena = maximalnaCenaKarte(data);
+			console.log("***Maximalna cena karte je: " + maxCena);
+			console.log("****Minimalna cena karte je: " + minCena);
+			
+			//sad postavljamo vrednost za izbor cene u range input polje
+			$("input[name=cenaOd]").prop("max", maxCena);
+			$("input[name=cenaOd]").prop("min", minCena);
+			
+			$("input[name=cenaDo]").prop("max", maxCena);
+			$("input[name=cenaDo]").prop("min", minCena);
+			
+			
+			
+			//menjamo vrednost labele u skladu sa selektovanom cenom
+			$("input[name=cenaOd]").change(function(){
+				$("#izabranaCenaOd").text($("input[name=cenaOd]").val());
+
+			})
+			
+			$("input[name=cenaDo]").change(function(){
+				$("#izabranaCenaDo").text($("input[name=cenaDo]").val());
+
+			})
+			
+			
+			
+		}
+			
+	);
+}
+
+function minimalnaCenaKarte(karte){
+	let ceneKarata = [];
+	
+	for(let karta of karte){
+		ceneKarata.push(parseFloat(karta.cena));
+	}
+	console.log(ceneKarata);
+	if( ceneKarata.length != 0){
+		return Math.min(...ceneKarata);
+	}
+	else
+		return 0;
+}
+
+function maximalnaCenaKarte(karte){
+	let ceneKarata = [];
+	
+	for(let karta of karte){
+		ceneKarata.push(parseFloat(karta.cena));
+	}
+	if( ceneKarata.length != 0){
+		return Math.max(...ceneKarata);
+	}
+	else
+		return 2000;
+	
 }
 
 
