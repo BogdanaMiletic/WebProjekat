@@ -45,6 +45,8 @@ $(document).ready(function(){
 					sortiranje(data);
 					filtriranjePoTipu(data);
 					filtrirajPoStatusuKarte(data);
+					
+					klikNaUndoDugme(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -501,6 +503,16 @@ function filtrirajPoStatusuKarte(korisnik){
 		event.preventDefault();
 	})
 		
+}
+
+function klikNaUndoDugme(korisnik){
+	$("#undoDugme").click(function(){
+		// ponisticemo sve sto je bilo prikazano >> ako je postojalo
+		$(".redovi").hide();
+
+		//pozivamo funkciju za prikaz svih rezervisanih karata
+		pregledRezervisanihKarata(korisnik);
+	})
 }
 
 
