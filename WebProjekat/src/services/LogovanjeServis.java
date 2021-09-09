@@ -46,7 +46,7 @@ public class LogovanjeServis {
 				ctx.setAttribute("trenutniKorisnik", k);
 			}
 		}
-		
+	
 		return kor;
 	}
 	

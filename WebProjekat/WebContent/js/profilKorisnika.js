@@ -26,6 +26,20 @@ $(document).ready(function(){
 					$("input[name=muski]").prop("checked", true);
 					console.log("Chekiran je muski polll");
 				}
+				
+				//********** PREGLED KARATA ZA KORISNIKE SA ULOGOM >>> KUPAC ***********
+				if(data.uloga == "KUPAC"){
+					console.log("Trenutno je ulogovan kupac....");
+					//dodajemo u zaglavlje onda link za pregled rezervisanih karata
+					$("#zaglavljePregledKarata").append("<a href=\"pregledRezervisanihKarata.html\"> pregled karata </a>")
+					
+					pregledRezervisanihKarata(data);
+					pretragaKarataPoNazivu();
+				}
+				else{
+					$(".pretragaKarata").hide();
+					$(".pregledRezervisanihKarataKorisnika").hide();
+				}
 			}
 			
 	);
@@ -38,7 +52,7 @@ $(document).ready(function(){
 	
 	
 	//ako se desi neka promena u podacima i ako se klikne na promeni podatke..
-	$("form").submit(function(event){
+	$("#formaPodatciProfila").submit(function(event){
 		//validacija promenjenih podataka..
 		let validacija = true;
 		
@@ -109,3 +123,71 @@ $(document).ready(function(){
 	});
 	
 })
+
+//************ PREGLED REZERVISANIH KARATA KORSNIKA ************
+
+function pregledRezervisanihKarata(korisnik){
+	$(".pregledRezervisanihKarataKorisnika").append("<p>Pregled rezervisanih karata korisnika..<p/>");
+	
+	for( let karte of korisnik.sveKarte){
+		if(karte.status == "REZERVISANA"){
+			$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
+					"" + "<td >" + karte.id + "</td>" +
+					"" + "<td >" + karte.manifestacijaZaKojuJeRezervisana + "</td>" +
+					"" + "<td >" + karte.datumIvremeManifestaije + "</td>" +
+					"" + "<td >" + karte.cena + "</td>" +
+					"" + "<td >" + karte.kupacImeIprezime + "</td>" +
+					"" + "<td >" + karte.status + "</td>" +
+					"" + "<td >" + karte.tipKarte + "</td>" +
+					
+					" </tr>");
+		}
+	}	
+}
+
+function pretragaKarataPoNazivu(){
+	$("#pretragaPoNazivu").submit(function(event){
+		let nazivZaPretragu = $("input[name=pretragaPoNazivu]").val();
+		console.log("Naziv je: " + nazivZaPretragu);
+		
+		//upucujemo zahtev za pretragu ..
+		
+		$.get(
+			"../WebProjekat/rest/karte/pretragaPoNazivu?naziv=" + nazivZaPretragu,
+			
+			function(data, status){
+				console.log("Status je: " + status);
+				console.log("Pronadjeno je: " + JSON.stringify(data));
+				listaZaPrikaz(data);
+				
+				
+			}
+		);
+		event.preventDefault();
+	});
+	
+function listaZaPrikaz(listaKarata){
+	// ****brisemo sve prethodno prikazane karte
+	$(".redovi").hide();
+	
+	//sad dodajemo sve te karte u tabelu i prikazujemo ih kao redove
+	/*for( let karte of korisnik.sveKarte){
+		if(karte.status == "REZERVISANA"){
+			$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
+					"" + "<td >" + karte.id + "</td>" +
+					"" + "<td >" + karte.manifestacijaZaKojuJeRezervisana + "</td>" +
+					"" + "<td >" + karte.datumIvremeManifestaije + "</td>" +
+					"" + "<td >" + karte.cena + "</td>" +
+					"" + "<td >" + karte.kupacImeIprezime + "</td>" +
+					"" + "<td >" + karte.status + "</td>" +
+					"" + "<td >" + karte.tipKarte + "</td>" +
+					
+					" </tr>");
+		}*/
+	}	
+}
+
+
+
+
+
