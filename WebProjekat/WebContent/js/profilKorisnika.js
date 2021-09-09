@@ -457,6 +457,20 @@ function filtriranjePoTipu(korisnik){
 					}
 			);
 		}
+		else if(izbor == "VIP"){
+			$.get(
+					"../WebProjekat/rest/karte/filterVip",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+			);
+		}
+		
 		
 		
 		event.preventDefault();

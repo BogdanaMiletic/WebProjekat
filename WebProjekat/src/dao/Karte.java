@@ -92,10 +92,10 @@ private ArrayList<Karta> karte = new ArrayList<>();
 					if(podaci[6].equals("REGULAR")) {
 						tipKarte = Karta.TipKarte.REGULAR;
 					}
-					else if(podaci[5].equals("FAN_PIT")) {
+					else if(podaci[6].equals("FAN_PIT")) {
 						tipKarte = Karta.TipKarte.FAN_PIT;
 					}
-					else if(podaci[5].equals("VIP")) {
+					else if(podaci[6].equals("VIP")) {
 						tipKarte = Karta.TipKarte.VIP;
 					}
 					

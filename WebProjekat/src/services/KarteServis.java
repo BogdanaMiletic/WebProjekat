@@ -261,7 +261,7 @@ public class KarteServis {
 	}
 	
 	@GET
-	@Path("/filterRegular")
+	@Path("/filterFanPit")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Karta> filtriranjeFanPitKarti() {
 		
@@ -269,6 +269,21 @@ public class KarteServis {
 		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
 		for(Karta k : this.getKarte().getKarte()) {
 			if(k.getTipKarte() == Karta.TipKarte.FAN_PIT) {
+				rezultati.add(k);
+			}
+		}
+		return rezultati;
+	}
+	
+	@GET
+	@Path("/filterVip")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> filtriranjeVipKarti() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
+		for(Karta k : this.getKarte().getKarte()) {
+			if(k.getTipKarte() == Karta.TipKarte.VIP) {
 				rezultati.add(k);
 			}
 		}
