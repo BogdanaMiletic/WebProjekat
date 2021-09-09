@@ -260,6 +260,21 @@ public class KarteServis {
 		return rezultati;
 	}
 	
+	@GET
+	@Path("/filterRegular")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> filtriranjeFanPitKarti() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
+		for(Karta k : this.getKarte().getKarte()) {
+			if(k.getTipKarte() == Karta.TipKarte.FAN_PIT) {
+				rezultati.add(k);
+			}
+		}
+		return rezultati;
+	}
+	
 	
 	
 	

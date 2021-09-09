@@ -444,6 +444,20 @@ function filtriranjePoTipu(korisnik){
 					}
 			);
 		}
+		else if(izbor == "FAN_PIT"){
+			$.get(
+					"../WebProjekat/rest/karte/filterFanPit",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+			);
+		}
+		
 		
 		event.preventDefault();
 	});
