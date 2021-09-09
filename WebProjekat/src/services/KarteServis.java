@@ -194,6 +194,56 @@ public class KarteServis {
 		return rezultati;
 	}
 	
+	@GET
+	@Path("/sortiranjeCenaOpadajuce")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sortiranjePoCeniOpadajuce() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		rezultati.addAll(this.getKarte().getKarte());
+		
+		Collections.sort(rezultati, new Comparator<Karta>() {
+			
+			@Override
+			public int compare(Karta k1, Karta k2) {
+				
+				if( k2.getCena()< k1.getCena()){
+					return -1;
+				}
+				return 1;
+		
+			}
+			
+		});
+		return rezultati;
+	}
+	
+	@GET
+	@Path("/sortiranjeCenaRastuce")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sortiranjePoCeniRastuce() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		rezultati.addAll(this.getKarte().getKarte());
+		
+		Collections.sort(rezultati, new Comparator<Karta>() {
+			
+			@Override
+			public int compare(Karta k1, Karta k2) {
+				
+				if( k1.getCena()< k2.getCena()){
+					return -1;
+				}
+				return 1;
+		
+			}
+			
+		});
+		return rezultati;
+	}
+	
 	
 	
 	public Karte getKarte() {
