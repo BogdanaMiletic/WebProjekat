@@ -3,7 +3,8 @@ package services;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 
 import dao.Karte;
 import model.Karta;
+import model.Manifestacija;
 
 @Path("karte")
 public class KarteServis {
@@ -28,6 +30,8 @@ public class KarteServis {
 	public ArrayList<Karta> sveKarte(){
 		return this.getKarte().getKarte();
 	}
+	
+	///???????????? ispraviti ovo da radi sa kartama od kupca...
 	
 	@GET
 	@Path("/pretragaPoNazivu")
@@ -95,6 +99,101 @@ public class KarteServis {
 		
 		return rezultati;
 	} 
+	
+	
+	//********** sortiranje ******************
+	@GET
+	@Path("/sortiranjeNazivOpadajuce")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sortiranjePoNazivuOpadajuce() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		rezultati.addAll(this.getKarte().getKarte());
+		
+		Collections.sort(rezultati, new Comparator<Karta>() {
+			
+			@Override
+			public int compare(Karta k1, Karta k2) {
+				
+				return k1.getManifestacijaZaKojuJeRezervisana().compareToIgnoreCase(k2.getManifestacijaZaKojuJeRezervisana());
+			}
+			
+		});
+		return rezultati;
+	}
+	
+	@GET
+	@Path("/sortiranjeNazivRastuce")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sortiranjePoNazivuRastuce() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		rezultati.addAll(this.getKarte().getKarte());
+		
+		Collections.sort(rezultati, new Comparator<Karta>() {
+			
+			@Override
+			public int compare(Karta k1, Karta k2) {
+				
+				return k2.getManifestacijaZaKojuJeRezervisana().compareToIgnoreCase(k1.getManifestacijaZaKojuJeRezervisana());
+			}
+			
+		});
+		return rezultati;
+	}
+	
+	@GET
+	@Path("/sortiranjeDatumRastuce")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sortiranjePoDatumuRastuce() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		rezultati.addAll(this.getKarte().getKarte());
+		
+		Collections.sort(rezultati, new Comparator<Karta>() {
+			
+			@Override
+			public int compare(Karta k1, Karta k2) {
+				
+				if( k1.getDatumIvremeManifestaije().isBefore(k2.getDatumIvremeManifestaije())){
+					return -1;
+				}
+				return 1;
+		
+			}
+			
+		});
+		return rezultati;
+	}
+	
+	@GET
+	@Path("/sortiranjeDatumOpadajuce")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Karta> sortiranjePoDatumuOpadajuce() {
+		
+		ArrayList<Karta> rezultati = new ArrayList<>();
+		
+		rezultati.addAll(this.getKarte().getKarte());
+		
+		Collections.sort(rezultati, new Comparator<Karta>() {
+			
+			@Override
+			public int compare(Karta k1, Karta k2) {
+				
+				if( k2.getDatumIvremeManifestaije().isBefore(k1.getDatumIvremeManifestaije())){
+					return -1;
+				}
+				return 1;
+		
+			}
+			
+		});
+		return rezultati;
+	}
+	
 	
 	
 	public Karte getKarte() {

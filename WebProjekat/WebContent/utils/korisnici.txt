@@ -1,4 +1,4 @@
 ana123;ana;ana;anic;ZENSKI;2020-03-03;ADMINISTRATOR;
 jana123;jan;jana;janic;ZENSKI;2021-02-02;ADMINISTRATOR;
 djoka123;djoka;djoka;djokic;MUSKI;2021-02-02;PRODAVAC;
-zika123;zile;zika;zikic;MUSKI;2021-02-02;KUPAC;1,2,3;10;BRONZANI;
+zika123;zile;zika;zikic;MUSKI;2021-02-02;KUPAC;1,2,3,4;10;BRONZANI;

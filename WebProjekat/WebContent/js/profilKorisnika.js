@@ -41,6 +41,8 @@ $(document).ready(function(){
 					pretragaKarataPoNazivu(data);
 					pretragaKarataPoCeni(data);
 					pretragaKarataPoDatumu(data);
+					
+					sortiranje(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -135,18 +137,23 @@ $(document).ready(function(){
 function pregledRezervisanihKarata(korisnik){
 	$(".pregledRezervisanihKarataKorisnika").append("<p>Pregled rezervisanih karata korisnika..<p/>");
 	
+	let imeIprezime = korisnik.ime + "," + korisnik.prezime;
+	console.log("** Ime i prezime: " + imeIprezime);
+	
 	for( let karte of korisnik.sveKarte){
 		if(karte.status == "REZERVISANA"){
-			$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
-					"" + "<td >" + karte.id + "</td>" +
-					"" + "<td >" + karte.manifestacijaZaKojuJeRezervisana + "</td>" +
-					"" + "<td >" + karte.datumIvremeManifestaije + "</td>" +
-					"" + "<td >" + karte.cena + "</td>" +
-					"" + "<td >" + karte.kupacImeIprezime + "</td>" +
-					"" + "<td >" + karte.status + "</td>" +
-					"" + "<td >" + karte.tipKarte + "</td>" +
-					
-					" </tr>");
+			if(karte.kupacImeIprezime == imeIprezime){
+				$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
+						"" + "<td >" + karte.id + "</td>" +
+						"" + "<td >" + karte.manifestacijaZaKojuJeRezervisana + "</td>" +
+						"" + "<td >" + karte.datumIvremeManifestaije + "</td>" +
+						"" + "<td >" + karte.cena + "</td>" +
+						"" + "<td >" + karte.kupacImeIprezime + "</td>" +
+						"" + "<td >" + karte.status + "</td>" +
+						"" + "<td >" + karte.tipKarte + "</td>" +
+						
+						" </tr>");
+			}
 		}
 	}	
 }
@@ -226,10 +233,13 @@ function pretragaKarataPoDatumu(korisnik){
 function listaZaPrikaz(listaKarata, korisnik){
 	// ****brisemo sve prethodno prikazane karte
 	$(".redovi").hide();
+	let imeIprezime = korisnik.ime + "," + korisnik.prezime;
+	console.log("** Ime i prezime: " + imeIprezime);
 	
 	//sad dodajemo sve te karte u tabelu i prikazujemo ih kao redove
 	for( let karte of listaKarata){
-		if(karte.status == "REZERVISANA"){
+		
+		if(karte.kupacImeIprezime == imeIprezime ){
 			$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
 					"" + "<td >" + karte.id + "</td>" +
 					"" + "<td >" + karte.manifestacijaZaKojuJeRezervisana + "</td>" +
@@ -315,6 +325,103 @@ function maximalnaCenaKarte(karte){
 	else
 		return 2000;
 	
+}
+
+
+//********** SORTIRANJE ******************
+
+//sortiranje po nazivu 
+function sortiranje(korisnik){
+	$("#sortiranjeForma").submit(function(event){
+		let izbor = $("#sortiranjeKarata option:selected").val();
+		console.log("izabrano je: " + izbor);
+		//upucujemo zahtev za pretragu ..
+		
+		if(izbor == "NAZIV_OPADAJUCE"){
+			$.get(
+					"../WebProjekat/rest/karte/sortiranjeNazivOpadajuce",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+				);
+		}
+		
+		if(izbor == "NAZIV_RASTUCE"){
+			$.get(
+					"../WebProjekat/rest/karte/sortiranjeNazivRastuce",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+				);
+		}
+		
+		if(izbor == "DATUM_OPADAJUCE"){
+			$.get(
+					"../WebProjekat/rest/karte/sortiranjeDatumOpadajuce",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+				);
+		}
+		
+		if(izbor == "DATUM_RASTUCE"){
+			$.get(
+					"../WebProjekat/rest/karte/sortiranjeDatumRastuce",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+				);
+			
+		}
+		
+		if(izbor == "CENA_RASTUCE"){
+			$.get(
+					"../WebProjekat/rest/karte/sortiranjeCenaRastuce",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+				);
+		}
+		if(izbor == "CENA_OPADAJUCE"){
+			$.get(
+					"../WebProjekat/rest/karte/sortiranjeCenaOpadajuce",
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("******Pronadjeno je: " + JSON.stringify(data));
+						listaZaPrikaz(data, korisnik);
+						
+						
+					}
+				);
+		}
+		event.preventDefault();
+	});
 }
 
 
