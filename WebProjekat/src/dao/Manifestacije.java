@@ -75,7 +75,7 @@ public class Manifestacije {
 					int brojMesta = Integer.parseInt(podaci[2]);
 					System.out.println(brojMesta);
 					DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-					LocalDateTime datumIvreme = LocalDateTime.parse(podaci[3], format);
+					LocalDateTime datumIvreme = LocalDateTime.parse(podaci[3].replace("T",  " "), format);
 					System.out.println(datumIvreme);
 					double cenaRegularKarte = Double.parseDouble(podaci[4]);
 					
@@ -141,10 +141,11 @@ public class Manifestacije {
 					tip = "POZORISTE";
 				}
 				
-				DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				String datumFormatiranje  = m.getDatumIvremeOdrzavanja()+"";
+				datumFormatiranje.replace("T", " ");
 				
 				pw.println(m.getNaziv() + ";" + tip + ";" + m.getBrojMesta()
-						+ ";" + m.getDatumIvremeOdrzavanja().format(format) + ";" + m.getCenaRegularKarte() + ";" 
+						+ ";" + datumFormatiranje + ";" + m.getCenaRegularKarte() + ";" 
 						+ status + ";" +m.getLokacija().getGeografskaSirina() + "|" + m.getLokacija().getGeografskaDuzina() + "|" + m.getLokacija().getAdresa()  + ";");
 				
 				pw.flush();

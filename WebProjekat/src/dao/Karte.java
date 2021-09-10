@@ -68,7 +68,7 @@ private ArrayList<Karta> karte = new ArrayList<>();
 					String nazivManifestacije = podaci[1];
 					System.out.println(nazivManifestacije);
 					DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-					LocalDateTime datum = LocalDateTime.parse(podaci[2], format);
+					LocalDateTime datum = LocalDateTime.parse(podaci[2].replace("T", " "), format);
 					System.out.println(datum);
 					
 					double cena = Double.parseDouble(podaci[3]);
@@ -142,7 +142,16 @@ private ArrayList<Karta> karte = new ArrayList<>();
 					tipKarte = "VIP";
 				}
 				
-				pw.println(k.getId()+ ";" + k.getManifestacijaZaKojuJeRezervisana() + ";" + k.getDatumIvremeManifestaije() + ";" + k.getCena() + ";" + k.getKupacImeIprezime() + ";" + status + ";" + tipKarte + ";");
+				//******** ISPRAVAN FORMAT DATUMA *********
+				//pravimo string od datuma
+				String datumFormatiranje  = k.getDatumIvremeManifestaije()+"";
+				datumFormatiranje.replace("T", " ");
+				
+				
+				System.out.println("\t>>>>>>>>>>>>>>>>>Datum i vrmee upississsssssssssssss: " + k.getDatumIvremeManifestaije());
+				
+				pw.println(k.getId()+ ";" + k.getManifestacijaZaKojuJeRezervisana() + ";" + datumFormatiranje + ";" + k.getCena() + ";" + k.getKupacImeIprezime() + ";" + status + ";" + tipKarte + ";");
+				System.out.println("NOva: "+ k.getId()+ ";" + k.getManifestacijaZaKojuJeRezervisana() + ";" + datumFormatiranje + ";" + k.getCena() + ";" + k.getKupacImeIprezime() + ";" + status + ";" + tipKarte + ";");
 				pw.flush();
 			}				
 		}

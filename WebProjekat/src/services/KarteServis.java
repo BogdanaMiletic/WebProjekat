@@ -1,5 +1,6 @@
 package services;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -8,14 +9,22 @@ import java.util.Comparator;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import dao.Karte;
+import dao.Korisnici;
 import model.Karta;
+import model.Korisnik;
+import model.Kupac;
 
 @Path("karte")
 public class KarteServis {
@@ -30,7 +39,6 @@ public class KarteServis {
 		return this.getKarte().getKarte();
 	}
 	
-	///???????????? ispraviti ovo da radi sa kartama od kupca...
 	
 	@GET
 	@Path("/pretragaPoNazivu")
@@ -311,6 +319,51 @@ public class KarteServis {
 		return rezultati;
 	}
 	
+	//********* REZERVACIJA KARTI ********************
+	@POST
+	@Path("/rezervacijaKarte")
+	public void rezervacijaKarti(String karta) throws JsonParseException, JsonMappingException, IOException {
+		System.out.println("?????????Karta za rezervaciju je: " + karta);
+		System.out.println("**********8Pre dodavanja karte(*(((((((((((((((((");
+		for(Karta k : this.getKarte().getKarte()) {
+			System.out.println(k.toString());
+			System.out.println("-----------------------------------");
+		}
+		
+		try {
+			Karta k = new ObjectMapper().readValue(karta, Karta.class);
+			
+			System.out.println("??????Karta: " + k);
+			
+			this.getKarte().getKarte().add(k);
+			
+			//upisujemo sve karte>>
+			this.getKarte().upisiSveKarte(ctx.getRealPath(""));
+			
+			//**********upisujemo kod korisnika koji je kupac u listu svih karata ovu kartu
+			//ko je ulogovan?
+			Korisnik ulogovanTrenutno = (Korisnik) ctx.getAttribute("trenutniKorisnik");
+
+			for(Korisnik korisnik: this.getKorisnici().getKorisnici()) {
+				if(korisnik.equals(ulogovanTrenutno)) {
+					Kupac kupac = (Kupac)korisnik;
+					kupac.getSveKarte().add(k);
+				}
+			}
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		System.out.println("************* DODATE KARTE ****************");
+		for(Karta k : this.getKarte().getKarte()) {
+			System.out.println(k.toString());
+			System.out.println("-----------------------------------");
+		}
+		
+	
+	}
+	
 	
 	
 	
@@ -325,5 +378,17 @@ public class KarteServis {
 			ctx.setAttribute("karte", karte);
 		}
 		return karte;
+	}
+	
+	private Korisnici getKorisnici() {
+		Korisnici korisnici = (Korisnici) ctx.getAttribute("korisnici");
+		
+		if(korisnici == null) {
+			korisnici = new Korisnici(ctx.getRealPath(""));
+			
+			//System.out.println("putanja: " + ctx.getRealPath("") + System.lineSeparator());
+			ctx.setAttribute("korisnici", korisnici);
+		}
+		return korisnici;
 	}
 }
