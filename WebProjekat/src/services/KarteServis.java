@@ -350,6 +350,8 @@ public class KarteServis {
 					kupac.getSveKarte().add(k);
 				}
 			}
+			//na kraju prepisemo i sve korisnike u fajlu... >>
+			this.getKorisnici().upisiSveKorisnike(ctx.getRealPath(""));
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -361,6 +363,8 @@ public class KarteServis {
 			System.out.println("-----------------------------------");
 		}
 		
+		System.out.println("**************Ispis korisnika: ");
+		System.out.println(((Korisnik) ctx.getAttribute("trenutniKorisnik")).toString());
 	
 	}
 	

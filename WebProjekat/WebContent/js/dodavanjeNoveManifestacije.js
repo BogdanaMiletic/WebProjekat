@@ -42,7 +42,7 @@ $(document).ready(function(){
 		
 
 		
-		if(validacijaJedinstvenosti == true && validacijaPodataka == true){
+		if (validacijaJedinstvenosti == true && validacijaPodataka == true){
 			//>>>uputi poziv za dodavanje nove manifestacije..
 			
 			let adresaOblik = ulicaIbroj+"," + grad+"," + postanskiBroj;
@@ -127,11 +127,6 @@ function validacija(naziv, tip, brojMesta, datum, cena, sirinaG, duzinaG, grad, 
 	
 	if(isNaN(cena) && cena != ""){
 		$("#porukaCena").text("Cena mora imati brojcanu vrednost..");
-		return false;
-	}
-	
-	if(aktivnoStatus=="" && neaktivnoStatus==""){
-		$("#porukaStatus").text("Morate uneti status...");
 		return false;
 	}
 	

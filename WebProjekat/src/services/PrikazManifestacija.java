@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -24,9 +23,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dao.Korisnici;
 import dao.Manifestacije;
+import model.Korisnik;
 import model.Manifestacija;
 import model.Manifestacija.TipManifestacije;
+import model.Prodavac;
 
 @Path("manifestacije")
 public class PrikazManifestacija {
@@ -303,17 +305,32 @@ public class PrikazManifestacija {
 			
 			this.getManifestacije().upisiSveManifestacije(ctx.getRealPath(""));
 			
-			System.out.println("******************** dodate manifestaicje *******************");
-			
-			for(Manifestacija m1 : this.getManifestacije().getManifestacije()) {
-				System.out.println(m1.toString());
-				System.out.println("--------------------------------------");
+			//**********upisujemo kod korisnika koji je prodavac u listu svih njegovih dodatih manifestacija ovu novu dodatu
+			//ko je ulogovan?
+			Korisnik ulogovanTrenutno = (Korisnik) ctx.getAttribute("trenutniKorisnik");
+
+			for(Korisnik korisnik: this.getKorisnici().getKorisnici()) {
+				if(korisnik.equals(ulogovanTrenutno)) {
+					Prodavac prodavac = (Prodavac)korisnik;
+					prodavac.getManifestacije().add(manifestacija);
+				}
 			}
+			//na kraju prepisemo i sve korisnike u fajlu... >>
+			this.getKorisnici().upisiSveKorisnike(ctx.getRealPath(""));
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		System.out.println("\t\t********* DODATE MANIFESTACIJE **********");
+		
+		for(Manifestacija m1: this.getManifestacije().getManifestacije()) {
+			System.out.println(m1.toString());
+			System.out.println("------------------------------------");
+		}
+		System.out.println("\t\t******Prodavac je: " + ((Korisnik) ctx.getAttribute("trenutniKorisnik")).toString());
 	}
+	
 	
 	@PUT
 	@Path("/izmeniManifestaciju/{geografskaSirina}/{geografskaDuzina}/{datum}")
@@ -376,5 +393,17 @@ public class PrikazManifestacija {
 			ctx.setAttribute("manifestacije", manifestacije);
 		}
 		return manifestacije;
+	}
+	
+	private Korisnici getKorisnici() {
+		Korisnici korisnici = (Korisnici) ctx.getAttribute("korisnici");
+		
+		if(korisnici == null) {
+			korisnici = new Korisnici(ctx.getRealPath(""));
+			
+			//System.out.println("putanja: " + ctx.getRealPath("") + System.lineSeparator());
+			ctx.setAttribute("korisnici", korisnici);
+		}
+		return korisnici;
 	}
 }
