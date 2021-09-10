@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -321,8 +322,10 @@ public class KarteServis {
 	
 	//********* REZERVACIJA KARTI ********************
 	@POST
-	@Path("/rezervacijaKarte")
-	public void rezervacijaKarti(String karta) throws JsonParseException, JsonMappingException, IOException {
+	@Path("/rezervacijaKarte/{brojKarti}")
+	public void rezervacijaKarti(String karta, @PathParam("brojKarti")String brojKarti) throws JsonParseException, JsonMappingException, IOException {
+		
+		System.out.println("Broj karti je: " + brojKarti);
 		System.out.println("?????????Karta za rezervaciju je: " + karta);
 		System.out.println("**********8Pre dodavanja karte(*(((((((((((((((((");
 		for(Karta k : this.getKarte().getKarte()) {
@@ -334,8 +337,13 @@ public class KarteServis {
 			Karta k = new ObjectMapper().readValue(karta, Karta.class);
 			
 			System.out.println("??????Karta: " + k);
-			
-			this.getKarte().getKarte().add(k);
+			for(int i=1; i<= Integer.parseInt(brojKarti); i++) {
+				Karta karta1 = new Karta(k);
+				int id = Integer.parseInt(karta1.getId()) + i ; 
+				System.out.println("??????????Id je: " + id);
+				karta1.setId(id +"");
+				this.getKarte().getKarte().add(karta1);
+			}
 			
 			//upisujemo sve karte>>
 			this.getKarte().upisiSveKarte(ctx.getRealPath(""));
@@ -347,7 +355,13 @@ public class KarteServis {
 			for(Korisnik korisnik: this.getKorisnici().getKorisnici()) {
 				if(korisnik.equals(ulogovanTrenutno)) {
 					Kupac kupac = (Kupac)korisnik;
-					kupac.getSveKarte().add(k);
+					for(int i=1; i<= Integer.parseInt(brojKarti); i++) {
+						Karta karta1 = new Karta(k);
+						int id = Integer.parseInt(karta1.getId()) + i ; 
+						System.out.println("??????????Id je: " + id);
+						karta1.setId(id +"");
+						kupac.getSveKarte().add(k);
+					}
 				}
 			}
 			//na kraju prepisemo i sve korisnike u fajlu... >>

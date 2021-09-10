@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Potvrda rezervacije karte</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/potvrdaRezervacijeKarte.js"></script>
+<link rel="stylesheet"  href="css/pojedinacniPrikazManifestacije.css"></link>
+<link rel="stylesheet" href="css/heder.css"></link>
+
+
+<script>
+	//ucitavanje hedera stranice
+	$(function(){
+		$("#heder").load("heder.html");
+	});
+</script>
+</head>
+<body>
+<div id="heder">
+</div>
+
+<hr>
+
+<div id="prikazManifestacije">
+	<p id="naziv" style="font-size:30px;"></p>
+	<label id="tip"></label>
+	<hr>
+	
+	<div id="slikaDiv">
+		<img src="slike/pozoriste.jpg" alt="slika postera" height="350px" width="350px"/>
+	</div>
+	
+	<div id="infoDiv">
+		
+		<p id="datum"></p>
+		<p id="cenaUkupna"></p>
+		<p id="broj"> </p>
+		
+		
+		
+	</div>
+		
+</div>
+
+</body>
+</html>

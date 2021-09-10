@@ -53,44 +53,53 @@ $(document).ready(function(){
 							// ********* treba proveriti da li je manifestacija aktivna 
 							//**** treba proveriti da li su rasprodate karte za tu manifestaciju
 							//???????????????????????????
+							let aktivnaRezervacijaKarata = daLiJeAktivnaManifestacija(data);
 							
-							$("#prikazManifestacije").append("<br/>");
-							$("#prikazManifestacije").append("<div class=\"rezervisanjeKarte\"> </div>");
-							
-							$(".rezervisanjeKarte").append("<label>Broj karti: </label>");
-							
-							$(".rezervisanjeKarte").append("<input type=\"text\" name=\"brojRezervisanih\">")
-							$(".rezervisanjeKarte").append("<br/>");
-							$(".rezervisanjeKarte").append("<label>Tip karte: </label>");
-							$(".rezervisanjeKarte").append("<select id=\"tipKarteRezervacija\"> " +
-										"</select>");
-							
-							$("#tipKarteRezervacija").append("<option value=\"REGULAR\">REGULAR</option");
-							$("#tipKarteRezervacija").append("<option value=\"FAN_PIT\">FAN_PIT</option");
-							$("#tipKarteRezervacija").append("<option value=\"VIP\">VIP</option");
-							
-							$(".rezervisanjeKarte").append("<button id=\"rezervacijaKarte\"> rezervisi kartu</button>"); 
-							
-							
-							$("input[name=brojRezervisanih]").val("1");
-							
-							//ukoliko se unese nesto drugo preuzimamo to i saljemo u okviru linka za rezervaciju
-							let brojRezervisanihKarti = "1";
-							$("input[name=brojRezervisanih]").change(function(){
-								brojRezervisanihKarti = $("input[name=brojRezervisanih]").val();
-								console.log("Broj rezervisanih karti je promenjen: " + brojRezervisanihKarti);
-							})
-						
-							
-							//obradjivac dogadjaja za klik na rezervaciju karte
-							$("#rezervacijaKarte").click(function(){
-								//preuzimamo tip karte
-								let tipKarte = $("#tipKarteRezervacija option:selected").val();
-								console.log("tip karte je: " + tipKarte);
+							if(aktivnaRezervacijaKarata){
+								$("#prikazManifestacije").append("<br/>");
+								$("#prikazManifestacije").append("<div class=\"rezervisanjeKarte\"> </div>");
 								
-								rezervisiKartu(brojRezervisanihKarti, data, podatak, tipKarte);
+								$(".rezervisanjeKarte").append("<label>Broj karti: </label>");
 								
-							});
+								$(".rezervisanjeKarte").append("<input type=\"text\" name=\"brojRezervisanih\">")
+								$(".rezervisanjeKarte").append("<br/>");
+								$(".rezervisanjeKarte").append("<label>Tip karte: </label>");
+								$(".rezervisanjeKarte").append("<select id=\"tipKarteRezervacija\"> " +
+											"</select>");
+								
+								$("#tipKarteRezervacija").append("<option value=\"REGULAR\">REGULAR</option");
+								$("#tipKarteRezervacija").append("<option value=\"FAN_PIT\">FAN_PIT</option");
+								$("#tipKarteRezervacija").append("<option value=\"VIP\">VIP</option");
+								
+								$(".rezervisanjeKarte").append("<button id=\"rezervacijaKarte\"> rezervisi kartu</button>"); 
+								
+								
+								$("input[name=brojRezervisanih]").val("1");
+								
+								//ukoliko se unese nesto drugo preuzimamo to i saljemo u okviru linka za rezervaciju
+								let brojRezervisanihKarti = "1";
+								$("input[name=brojRezervisanih]").change(function(){
+									brojRezervisanihKarti = $("input[name=brojRezervisanih]").val();
+									console.log("Broj rezervisanih karti je promenjen: " + brojRezervisanihKarti);
+								})
+							
+								
+								//obradjivac dogadjaja za klik na rezervaciju karte
+								$("#rezervacijaKarte").click(function(){
+									//preuzimamo tip karte
+									let tipKarte = $("#tipKarteRezervacija option:selected").val();
+									console.log("tip karte je: " + tipKarte);
+									
+									//rezervisiKartu(brojRezervisanihKarti, data, podatak, tipKarte);
+									window.location.href = "potvrdaRezervacijeKarte.html?nazivManifestacije="+data.naziv+"&datum="+ 
+										data.datumIvremeOdrzavanja+"&lokacija=" + data.lokacija.adresa + "&sirina=" + data.lokacija.geografskaSirina + 
+										"&duzina=" + data.lokacija.geografskaDuzina+ "&tipKarte="+tipKarte+"&brojRezervisanih="+brojRezervisanihKarti;
+
+									//potvrdiRezervaciju(brojRezervisanihKarti, data, podatak, tipKarte);
+								});
+							}
+							
+							
 							
 							
 						}
@@ -108,6 +117,67 @@ function formatirajDatum(datum){
 	return novi;
 }
 
+function daLiJeAktivnaManifestacija(manifestacija){
+	
+	let aktivna = true;
+	//proveravamo da li je manifestacija aktivna
+	if(manifestacija.status == "NEAKTIVNO"){
+		aktivna = false;
+	}
+	
+	//PROVERA DA LI SU KARTE ZA TU MANIFESTACIJU RASPRODATE..
+	let brojDostupnihKarata = manifestacija.brojMesta;
+	
+	//trazimo broj rezervisanih karata za konkretno tu manifestaciju>> 
+	
+	//preuzimamo sve karte
+	$.get(
+		"../WebProjekat/rest/karte/sveKarte",
+		function(data, status){
+			let brojRezervisanihKarti = 0;
+			for(let karta of data){
+				if(karta.datumIvremeManifestaije == manifestacija.datumIvremeOdrzavanja
+						&& karta.manifestacijaZaKojuJeRezervisana == manifestacija.naziv){
+					
+					if(karta.status == "REZERVISANA"){
+						brojRezervisanihKarti += 1;
+					}
+				}
+			}
+			
+			if (brojRezervisanihKarti >= brojDostupnihKarata){
+				aktivna = false;
+			}
+		}
+	);
+	return aktivna;
+}
+
+
+/*function potvrdiRezervaciju(brojKarti, manifestacija, narucilac, tipKarte){
+	console.log("Upali smo u potvrdu rezervacije...");
+	
+	$("#naziv").text(manifestacija.naziv);
+	$("#tip").text(manifestacija.tip);
+	$("#datum").text(manifestacija.datumIvremeOdrzavanja);
+	
+	//*** cena ukupna
+	let cenaIzracunata = racunanjeCeneKarte(manifestacija, tipKarte);
+	console.log("Cena karte je: " + cenaIzracunata);
+	$("cenaUkupna").text(cenaIzracunata);
+	
+	$("#broj").text(brojKarti);
+	
+	$("#potvrdaRezervacije").append("<button id=\"rezervacijaKartePotvrda\"> rezervisi kartu</button>");
+	
+	$("#rezervacijaKartePotvrda").click(function(){
+		
+		//rezervisiKartu(brojRezervisanihKarti, data, podatak, tipKarte);
+		//potvrdiRezervaciju(brojRezervisanihKarti, data, podatak, tipKarte);
+	});
+	
+	
+}
 function rezervisiKartu(brojKarti, manifestacija, narucilac, tipKarte){
 	console.log("Upali smo u rezervaciju...");
 	
@@ -179,3 +249,4 @@ function racunanjeCeneKarte(manifestacija, tipKarte){
 		return vipCena;
 	}
 }
+*/

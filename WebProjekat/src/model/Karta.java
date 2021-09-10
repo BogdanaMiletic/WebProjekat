@@ -25,8 +25,18 @@ public class Karta {
 	private Status status;
 	private TipKarte tipKarte;
 	
-	private Karta() {
+	public Karta() {
 		
+	}
+	
+	public Karta(Karta k) {
+		this.id = k.getId();
+		this.manifestacijaZaKojuJeRezervisana = k.getManifestacijaZaKojuJeRezervisana();
+		this.datumIvremeManifestaije = k.getDatumIvremeManifestaije();
+		this.cena = k.getCena();
+		this.kupacImeIprezime = k.getKupacImeIprezime();
+		this.status = k.getStatus();
+		this.tipKarte = k.getTipKarte();
 	}
 	
 	public Karta(String id, String manifestacijaZaKojuJeRezervisana, LocalDateTime datumIvremeManifestaije,
