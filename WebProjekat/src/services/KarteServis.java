@@ -426,6 +426,34 @@ public class KarteServis {
 	
 	}
 	
+	//******** DA LI JE KUPAC KARTE POSETIO MANIFESTAICJU ************* 
+		@GET
+		@Path("/daLiJePosetioManifestaciju")
+		@Produces(MediaType.APPLICATION_JSON)
+		
+		public boolean daLiJePosetioManifestaciju(@QueryParam("naziv") String naziv, @QueryParam("datum")String datum,
+					@QueryParam("imeIprezime")String imeIprezime) {
+			boolean posetio = false;
+			
+			DateTimeFormatter forma = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			String noviD = datum.replace("T", " ").substring(0, datum.length() -3);
+			LocalDateTime datumNovi = LocalDateTime.parse(noviD,forma);
+			
+			for(Karta karta: this.getKarte().getKarte()) {
+				if( karta.getManifestacijaZaKojuJeRezervisana().equals(naziv) &&
+						karta.getDatumIvremeManifestaije().equals(datumNovi) &&
+						karta.getKupacImeIprezime().equals(imeIprezime) && 
+						karta.getStatus() == Karta.Status.REZERVISANA){
+					
+					posetio = true;
+				}
+					
+			}
+			
+			
+			return posetio;
+		}
+	
 	
 	
 	

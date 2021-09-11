@@ -16,6 +16,7 @@ $(document).ready(function(){
 	$.get("../WebProjekat/rest/manifestacije/" + naziv + "/" + datum + "/" + adresa+"/" + sirinaPreuzeta + "/" + duzinaPreuzeta,
 		function(data, status){
 			console.log(JSON.stringify(data));
+			var manifestacijaProsledi  = data;
 			
 			//dinamicki podesavamo vrednosti za prikaz konkretrne manifestacije
 			$("#naziv").text(data.naziv);
@@ -36,9 +37,15 @@ $(document).ready(function(){
 			$.get(
 				"../WebProjekat/rest/korisnici/trenutnoUlogovan",
 				function( podatak,status){
+					if(podatak == null){
+						//ako niko nije ulogovan komentarisanje je zabranjeno..
+						$("#dodajKomentar").hide();
+					}
 					
 					//undefined je ako niko nije ulogovan..
 					if(podatak != undefined){
+						
+						
 						console.log("Ulogovan je: " + podatak);
 						if(podatak.uloga == "PRODAVAC"){
 							console.log("Ulogovan je prodavac...");
@@ -49,6 +56,10 @@ $(document).ready(function(){
 							//***** REZERVACIJA KARTI *********
 							//omoguci rezervaciju karte
 							console.log("Ulogovan je kupac");
+							console.log("\t\t^^^^^^^^^^^^^^^^^^^^^^^^^ Manifestacija je: " + JSON.stringify(data));
+							
+							//omogucimo dodavanje komentara...
+							dodajKomentar(podatak, manifestacijaProsledi);
 							
 							// ********* treba proveriti da li je manifestacija aktivna 
 							//**** treba proveriti da li su rasprodate karte za tu manifestaciju
@@ -98,9 +109,6 @@ $(document).ready(function(){
 									//potvrdiRezervaciju(brojRezervisanihKarti, data, podatak, tipKarte);
 								});
 							}
-							
-							
-							
 							
 						}
 					}
@@ -153,6 +161,61 @@ function daLiJeAktivnaManifestacija(manifestacija){
 	return aktivna;
 }
 
+
+/************** DODAJ KOMENTAR ***********/
+function dodajKomentar(korisnik, manifestacija){
+	
+	console.log("********* PROVERA KOMENTARISANJE MOZ LI **************");
+	mozeLiDaKomentarise(korisnik, manifestacija);
+	
+	
+	
+}
+
+function mozeLiDaKomentarise(korisnik, manifestacija){
+	// proverimo ima li ovaj korisnik rezervisanu kartu za ovu manifestaciju
+	
+	//??vracamo sve karte
+	
+	
+	console.log("$$$$$$$ Manifestacija je: " + JSON.stringify(manifestacija));
+	
+	
+	$.get(
+			"../WebProjekat/rest/manifestacije/daLiJeMaifestacijaOdrzana?naziv="+ manifestacija.naziv+ "&datum=" + manifestacija.datumIvremeOdrzavanja,
+			function(data, status){
+				
+				let daLiJeOdrzana = data;
+				console.log("!!!!!!!!!!!!    Manifestacija je odrzana: " + data);
+				
+				//proveravamo da li ima kupc rezervisanu kartu za tu manifestaiciju>> da li je posetio..
+				var imeIprezimeUlogovanog = korisnik.ime + "," + korisnik.prezime;
+				
+				$.get(
+						"../WebProjekat/rest/karte/daLiJePosetioManifestaciju?naziv="+ manifestacija.naziv + "&datum=" + manifestacija.datumIvremeOdrzavanja + "&imeIprezime=" + imeIprezimeUlogovanog,
+						function(imaRezervisanu, status){
+							
+							console.log("!!!!!!!!!!!! Kupac ima rezervisanu kartu: " + imaRezervisanu);
+							
+							if(imaRezervisanu == true && daLiJeOdrzana == true){
+								console.log("Uspesno prikazuj>>>>>>>>>>>>> " + manifestacija.naziv + " " + true);
+								
+								
+								console.log("***********Korinsik MOZE da komentarise.....");
+							}
+							else{
+								console.log("NEUSPESNO PRIKAZUJ prikazuj>>>>>>>>>>>>> " + manifestacija.naziv + " " + false);
+								console.log("Vrednosti: " + imaRezervisanu + " , " + daLiJeOdrzana);
+
+								$("#dodajKomentar").hide();
+							}
+							
+						}
+				);
+				
+			}
+	);
+}	
 
 /*function potvrdiRezervaciju(brojKarti, manifestacija, narucilac, tipKarte){
 	console.log("Upali smo u potvrdu rezervacije...");

@@ -23,8 +23,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dao.Karte;
 import dao.Korisnici;
 import dao.Manifestacije;
+import model.Karta;
 import model.Korisnik;
 import model.Manifestacija;
 import model.Manifestacija.TipManifestacije;
@@ -381,6 +383,36 @@ public class PrikazManifestacija {
 		return mani;
 	}
 	
+	@GET
+	@Path("/daLiJeMaifestacijaOdrzana")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean daLiJeOdrzanaManifestacija(@QueryParam("naziv")String naziv, @QueryParam("datum")String datum) {
+		
+		LocalDateTime sad = LocalDateTime.now();
+		System.out.println(">>>>>             Datum je: " + datum);
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String noviDatum = datum.replace("T", " ").substring(0, datum.length()-3);
+		
+		boolean odrzana = false;
+		
+		for(Manifestacija m : this.getManifestacije().getManifestacije()) {
+			if(m.getDatumIvremeOdrzavanja().equals(LocalDateTime.parse(noviDatum, format))
+					&& m.getNaziv().equals(naziv)) {
+				System.out.println(":??????????????????????????? upali smo");
+			
+				if(sad.isAfter(m.getDatumIvremeOdrzavanja())) {
+					System.out.println("Upad 222222222222");
+					odrzana = true;
+					break;
+				}
+			}
+		}
+		
+		return odrzana;
+	}
+	
+	
 	
 	
 	private Manifestacije getManifestacije() {
@@ -405,5 +437,16 @@ public class PrikazManifestacija {
 			ctx.setAttribute("korisnici", korisnici);
 		}
 		return korisnici;
+	}
+	public Karte getKarte() {
+		Karte karte = (Karte) ctx.getAttribute("karte");
+		
+		if(karte == null) {
+			karte = new Karte(ctx.getRealPath(""));
+			
+			//System.out.println("putanja: " + ctx.getRealPath("") + System.lineSeparator());
+			ctx.setAttribute("karte", karte);
+		}
+		return karte;
 	}
 }
