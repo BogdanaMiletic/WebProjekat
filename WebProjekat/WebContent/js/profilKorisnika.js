@@ -47,6 +47,8 @@ $(document).ready(function(){
 					filtrirajPoStatusuKarte(data);
 					
 					klikNaUndoDugme(data);
+					
+					ponistiRezervacijuKarte(data);
 				}
 				else{
 					$(".pretragaKarata").hide();
@@ -139,6 +141,9 @@ $(document).ready(function(){
 //************ PREGLED REZERVISANIH KARATA KORSNIKA ************
 
 function pregledRezervisanihKarata(korisnik){
+	//ako je nesto bilo prethodno prikazano sklanjamo to..
+	$(".redovi").hide();
+	
 	$(".pregledRezervisanihKarataKorisnika").append("<p>Pregled rezervisanih karata korisnika..<p/>");
 	
 	let imeIprezime = korisnik.ime + "," + korisnik.prezime;
@@ -147,6 +152,7 @@ function pregledRezervisanihKarata(korisnik){
 	for( let karte of korisnik.sveKarte){
 		if(karte.status == "REZERVISANA"){
 			if(karte.kupacImeIprezime == imeIprezime){
+				
 				$("#tabelaRezervisanihKarata").append("<tr class=\"redovi\">" +
 						"" + "<td >" + karte.id + "</td>" +
 						"" + "<td >" + karte.manifestacijaZaKojuJeRezervisana + "</td>" +
@@ -155,7 +161,7 @@ function pregledRezervisanihKarata(korisnik){
 						"" + "<td >" + karte.kupacImeIprezime + "</td>" +
 						"" + "<td >" + karte.status + "</td>" +
 						"" + "<td >" + karte.tipKarte + "</td>" +
-						
+						"" + "<td> <button class=\"otkaziRezervaciju\" id=\""+ karte.id +"\"> otkazi rezervaciju </button> </td>" + 
 						" </tr>");
 			}
 		}
@@ -513,6 +519,36 @@ function klikNaUndoDugme(korisnik){
 		//pozivamo funkciju za prikaz svih rezervisanih karata
 		pregledRezervisanihKarata(korisnik);
 	})
+}
+
+function ponistiRezervacijuKarte(korisnik){
+	$(".otkaziRezervaciju").click(function(event){
+		console.log("####### KLIKNUTO JE NA: " + $(this).attr("id"));
+		
+		let idKliknuteKarte = $(this).attr("id");
+		
+		//pretraga te karte prema tom id-iju..
+		
+		$.get(
+			"../WebProjekat/rest/karte/otkaziRezervacijuKarte/?id=" + idKliknuteKarte,
+			function (data, status){
+				if(data != null){
+					//znaci da je uspesno otkazana rezervisana karta
+					//ponovo prikazujemo sve manifestacije koje je korisnik rezervisao..
+					window.location.href = "profilKorisnika.html";
+				}
+				else{
+					//dajemo poruku da nije moguce otkazati rezervisanu kartu..
+					$("#porukaInfo").text("Nije moguce otkazati rezervisanu kartu (najkasnije 7 dana pre odrzavanja manifestaicije)..");
+				}
+				
+				
+			}
+		);
+		
+		
+	})
+	
 }
 
 

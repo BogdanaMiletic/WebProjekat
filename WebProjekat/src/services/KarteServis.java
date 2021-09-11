@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.Karte;
 import dao.Korisnici;
 import model.Karta;
+import model.Karta.Status;
 import model.Korisnik;
 import model.Kupac;
 
@@ -54,6 +55,49 @@ public class KarteServis {
 			}
 		}
 		return rezultati;
+	}
+	
+	@GET
+	@Path("/otkaziRezervacijuKarte")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Karta pretragaPoId(@QueryParam("id")String id) {
+		
+		Karta karta = null;
+		
+		LocalDateTime sadasnjeVreme = LocalDateTime.now();
+		LocalDateTime sadaPlus7Dana = sadasnjeVreme.plusDays(7);
+		
+		//pretrazujemo iz liste svih karata karte sa prosledjenim nazivom manifestacije
+		for(Karta k : this.getKarte().getKarte()) {
+			if(k.getId().equalsIgnoreCase(id.trim())) {
+				//menjamo status karte u otkazan
+				
+				//mozemo ga promeniti najkasnije 7 dana pre odrzavanja manifestacije
+
+				if(sadaPlus7Dana.isBefore(k.getDatumIvremeManifestaije())) {
+					k.setStatus(Status.ODUSTANAK);
+					karta = k;
+				}
+			}
+		}
+		
+		//i za trenutnog korisnika menjamo njegovu listu karata i ponovo vrsimo citanje i pisanje
+		//?? trenutni korisnik
+		Kupac kor = (Kupac) ctx.getAttribute("trenutniKorisnik");
+		for(Karta k : kor.getSveKarte()) {
+			if(k.getId().equalsIgnoreCase(id.trim())) {
+				//menjamo status karte u otkazan
+				if(sadaPlus7Dana.isBefore(k.getDatumIvremeManifestaije())) {
+					k.setStatus(Status.ODUSTANAK);
+					karta = k;
+				}
+			}
+		}
+	
+		//upisujemo u fajl ovu trajnu promenu
+		this.getKarte().upisiSveKarte(ctx.getRealPath(""));
+		
+		return karta;
 	}
 	
 	@GET
