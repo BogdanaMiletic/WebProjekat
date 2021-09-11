@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 
 import model.Karta;
 import model.Komentar;
+import model.Komentar.Status;
 import model.Korisnik;
 import model.Kupac;
 import model.Manifestacija;
@@ -114,8 +115,18 @@ public class Komentari {
 					int ocenaKomentar = Integer.parseInt(podaci[3]);
 					
 					
+					Komentar.Status statusKomentara = null;
+					if(podaci[4].equals("KREIRAN")) {
+						statusKomentara = Status.KREIRAN;
+					}
+					else if(podaci[4].equals("ODOBREN")) {
+						statusKomentara = Status.ODOBREN;
+					}
+					else if(podaci[4].equals("ODBIJEN")) {
+						statusKomentara = Status.ODBIJEN;
+					}
 					//DODAJEMO KARTU>> UPISUJEMO JE..
-					Komentar komentar = new Komentar(kupac, manifestacijaKom, textKomentara, ocenaKomentar);
+					Komentar komentar = new Komentar(kupac, manifestacijaKom, textKomentara, ocenaKomentar, statusKomentara);
 					komentari.add(komentar);
 				}
 				
@@ -137,7 +148,7 @@ public class Komentari {
 	}
 
 
-	public void upisiSveKarte(String putanja) {
+	public void upisiSveKomentare(String putanja) {
 		PrintWriter pw = null;
 		try {
 		
@@ -154,9 +165,9 @@ public class Komentari {
 				
 				System.out.println("\t>>>>>>>>>>>>>>>>>Datum i vrmee upississsssssssssssss: " + k.getManifestacija().getDatumIvremeOdrzavanja());
 				
-				pw.println(k.getKupacKomentator().getKorisnickoIme()+"," + k.getKupacKomentator().getLozinka() + ";" + k.getManifestacija().getNaziv() + "," + datumFormatiranje + ";" + k.getTextKomentara() + ";" + k.getOcena() + ";" );
+				pw.println(k.getKupacKomentator().getKorisnickoIme()+"," + k.getKupacKomentator().getLozinka() + ";" + k.getManifestacija().getNaziv() + "," + datumFormatiranje + ";" + k.getTextKomentara() + ";" + k.getOcena() + ";" + k.getStatus() + ";" );
 				//System.out.println("NOva: "+ k.getId()+ ";" + k.getManifestacijaZaKojuJeRezervisana() + ";" + datumFormatiranje + ";" + k.getCena() + ";" + k.getKupacImeIprezime() + ";" + status + ";" + tipKarte + ";");
-				System.out.println(" \t\tNovi komentar: "+ k.getKupacKomentator().getKorisnickoIme()+"," + k.getKupacKomentator().getLozinka() + ";" + k.getManifestacija().getNaziv() + "," + datumFormatiranje + ";" + k.getTextKomentara() + ";" + k.getOcena() + ";" );
+				System.out.println(" \t\tNovi komentar: "+ k.getKupacKomentator().getKorisnickoIme()+"," + k.getKupacKomentator().getLozinka() + ";" + k.getManifestacija().getNaziv() + "," + datumFormatiranje + ";" + k.getTextKomentara() + ";" + k.getOcena() + ";"  + k.getStatus() + ";");
 
 				
 				pw.flush();

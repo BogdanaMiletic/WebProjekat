@@ -2,24 +2,30 @@ package model;
 
 public class Komentar {
 	
+	public enum Status{
+		KREIRAN, ODOBREN, ODBIJEN;
+	}
 	private Kupac kupacKomentator;
 	private Manifestacija manifestacija;
 	private String textKomentara;
 	private int ocena;
+	private Status status;
 	
 	public Komentar() {
 		
 	}
-	public Komentar(Kupac kupacKomentator, Manifestacija manifestacija, String textKomentara, int ocena) {
+	public Komentar(Kupac kupacKomentator, Manifestacija manifestacija, String textKomentara, int ocena, Status status) {
 		super();
 		this.kupacKomentator = kupacKomentator;
 		this.manifestacija = manifestacija;
 		this.textKomentara = textKomentara;
 		this.ocena = ocena;
+		this.status = status;
 	}
 	
 
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -27,6 +33,7 @@ public class Komentar {
 		result = prime * result + ((kupacKomentator == null) ? 0 : kupacKomentator.hashCode());
 		result = prime * result + ((manifestacija == null) ? 0 : manifestacija.hashCode());
 		result = prime * result + ocena;
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((textKomentara == null) ? 0 : textKomentara.hashCode());
 		return result;
 	}
@@ -50,6 +57,8 @@ public class Komentar {
 		} else if (!manifestacija.equals(other.manifestacija))
 			return false;
 		if (ocena != other.ocena)
+			return false;
+		if (status != other.status)
 			return false;
 		if (textKomentara == null) {
 			if (other.textKomentara != null)
@@ -82,11 +91,18 @@ public class Komentar {
 	public void setOcena(int ocena) {
 		this.ocena = ocena;
 	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "Komentar [kupacKomentator=" + kupacKomentator + ", manifestacija=" + manifestacija + ", textKomentara="
-				+ textKomentara + ", ocena=" + ocena + "]";
+				+ textKomentara + ", ocena=" + ocena + ", status=" + status + "]";
 	}
+	
 	
 	
 

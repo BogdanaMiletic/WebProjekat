@@ -40,17 +40,27 @@ $(document).ready(function(){
 					if(podatak == null){
 						//ako niko nije ulogovan komentarisanje je zabranjeno..
 						$("#dodajKomentar").hide();
+						
 					}
 					
 					//undefined je ako niko nije ulogovan..
 					if(podatak != undefined){
 						
+						//********** PRIKAZ KOMENTARA ***************
+						prikazKomentara(podatak, manifestacijaProsledi);
 						
 						console.log("Ulogovan je: " + podatak);
 						if(podatak.uloga == "PRODAVAC"){
 							console.log("Ulogovan je prodavac...");
 							console.log("POdaci: " + data.lokacija.adresa + " ," + data.lokacija.geografskaSirina + " ," + data.lokacija.geografskaDuzina);
 							$("#prikazManifestacije").append("<a href=\"izmenaPodatakaOmanifestaciji.html?naziv="+data.naziv + "&datum="+ data.datumIvremeOdrzavanja +"&lokacija="+data.lokacija.adresa+ "&sirina="+data.lokacija.geografskaSirina +"&duzina="+data.lokacija.geografskaDuzina+ "\">Izmeni podatke o manifestaciji</a>")
+						
+							//oni ne daju komentare>>>>
+							$("#dodajKomentar").hide();
+							
+							//omogucimo odbijanje i prihvatanje komentara
+							
+							
 						}
 						else if(podatak.uloga == "KUPAC"){
 							//***** REZERVACIJA KARTI *********
@@ -110,6 +120,10 @@ $(document).ready(function(){
 								});
 							}
 							
+						}
+						else{
+							//oni ne daju komentare>>>>
+							$("#dodajKomentar").hide();
 						}
 					}
 					
@@ -244,7 +258,8 @@ function dodavanjeKomentaraFunkcionalnost(korisnik, manifestacija){
 				"kupacKomentator": korisnik,
 				"manifestacija": manifestacija,
 				"textKomentara": textKomentar,
-				"ocena": vrednostOcene
+				"ocena": vrednostOcene,
+				"status": "KREIRAN"
 		}
 		$.post(
 				"../WebProjekat/rest/komentari/noviKomentar",
@@ -254,10 +269,102 @@ function dodavanjeKomentaraFunkcionalnost(korisnik, manifestacija){
 				}
 		);
 		
+	})	
+}
+
+function prikazKomentara(korisnik, manifestacija){
+	
+	$.get(
+			"../WebProjekat/rest/komentari/sviKomentari",
+			function(data, status){
+				
+				//ako su neki prikazani sklonimo ih...
+				$(".kom").hide();
+				
+				
+				
+				if(korisnik.uloga == "KUPAC"){
+					//PRIKAZUJEMO SAMO ODOBRENE KOMENTARE
+					
+					for(let komentar of data){
+						if(komentar.status == "ODOBREN"){
+							//prikazujemo samo komentare koji odgovaraju konkretnoj manifestaciji
+							if(komentar.manifestacija.naziv == manifestacija.naziv &&
+									komentar.manifestacija.datumIvremeOdrzavanja == manifestacija.datumIvremeOdrzavanja){
+							
+								$("#pregledKomentara").append("<div class=\"kom\"> </div>");
+								$(".kom").append("<label>" + komentar.kupacKomentator.ime +" "+ komentar.kupacKomentator.prezime + "</label>");
+								$(".kom").append("<br/>");
+								$(".kom").append("<label>" + komentar.textKomentara + "</label>");
+								$(".kom").append("<label> Ocena: " + komentar.ocena + "</label>" );
+								$(".kom").append("<label> Status: " + komentar.status + "</label>");
+								$(".kom").append("<hr>");
+							}
+								
+						}
+					}
+				}
+				else if(korisnik.uloga == "ADMINISTRATOR" || korisnik.uloga == "PRODAVAC"){
+					//ADMINISTARATORI I PRODAVCI VIDE SVE KOMENTARE (odbijene i odobrene)
+					for(let komentar of data){
+						//komentar prikazujemo ako odgovara toj manifestaciji
+						if(komentar.manifestacija.naziv == manifestacija.naziv &&
+								komentar.manifestacija.datumIvremeOdrzavanja == manifestacija.datumIvremeOdrzavanja){
+							
+							$("#pregledKomentara").append("<div class=\"kom\"> </div>");
+							$(".kom").append("<label>" + komentar.kupacKomentator.ime +" "+ komentar.kupacKomentator.prezime + "</label>");
+							$(".kom").append("<br/>");
+							$(".kom").append("<label>" + komentar.textKomentara + "</label>");
+							$(".kom").append("<label> Ocena: " + komentar.ocena + "</label>" );
+							$(".kom").append("<label> Status: " + komentar.status + "</label>");
+							
+							if(korisnik.uloga == "PRODAVAC"){
+								
+								//*********** ODOBRAVANJE KOMENTARA ***************
+								//AKO JE PRODAVAC IMA MOGUCNOST ODOBRAVANJA KOMENTARA i odbijanja
+								$(".kom").append("<button class=\"odobri\">odobri komentar</button>")
+								$(".kom").append("<button class=\"odbij\"> odbij komentar </button>");
+								
+								//funkcija za odobravanje komentara
+								odobravanjeKomentara(komentar, manifestacija, korisnik);
+								
+							}
+							$(".kom").append("<hr>")
+							
+						}
+					}
+				}
+			}
+	);
+}
+
+//******* ODOBRAVANJE KOMENTARA - funkcionalnost kupca ************/
+function odobravanjeKomentara(komentar, manifestacija, korisnik){
+	
+		//proverimo da li je selektovano dugme za ODOBRAVANJE komentara
+	$(".odobri").click(function(){
+		$.ajax({
+			url: "../WebProjekat/rest/komentari/odobravanjeKomentara/" + komentar.kupacKomentator.korisnickoIme + "/"+ komentar.manifestacija.naziv + "/"+ komentar.manifestacija.datumIvremeOdrzavanja+"/" + komentar.textKomentara + "/" + "ODOBREN", 
+			type: 'PUT',
+			success: function(data, status) {
+			       console.log("Komentar je odobren....");
+			       console.log(JSON.stringify(data));
+			}
+		});
 	})
 	
 	
-	
+		//proverimo da li je selektovano dugme za ODBIJANJE komentara
+
+	$(".odbij").click(function(){
+		$.ajax({
+			url: "../WebProjekat/rest/komentari/odobravanjeKomentara/" + komentar.kupacKomentator.korisnickoIme + "/"+ komentar.manifestacija.naziv + "/"+ komentar.manifestacija.datumIvremeOdrzavanja+"/" + komentar.textKomentara + "/" + "ODBIJEN", 
+			type: 'PUT',
+			success: function(result) {
+			        console.log("Komentar je odbijen");
+			}
+		});
+	})		
 }
 
 /*function potvrdiRezervaciju(brojKarti, manifestacija, narucilac, tipKarte){
