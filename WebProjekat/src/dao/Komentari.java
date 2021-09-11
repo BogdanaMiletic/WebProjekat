@@ -21,6 +21,11 @@ import model.Manifestacija;
 public class Komentari {
 	private ArrayList<Komentar> komentari = new ArrayList<>();
 	
+	//ovde cuvamo ucitane korisnike i manifestacije
+	private Korisnici korisnici = null;
+	private Manifestacije manifestacije = null;
+	
+	
 	@Context
 	ServletContext ctx;
 	
@@ -29,13 +34,19 @@ public class Komentari {
 	}
 	
 	public Komentari(String putanja) {
+		korisnici = new Korisnici(putanja);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(korisnici.getKorisnici().toString());
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		manifestacije = new Manifestacije(putanja);
+				
 		System.out.println("Upali smo....");
 		BufferedReader in = null;
 		try {
 			File file = new File(putanja +"/utils"+"/komentari.txt") ;
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
-			procitajKarte(in);
+			procitajKomentare(in);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,7 +63,7 @@ public class Komentari {
 	/**
 	 * Cita karte iz datoteke i smesta ih u listu svih karata
 	 */
-	public void procitajKarte(BufferedReader in) {
+	public void procitajKomentare(BufferedReader in) {
 		String linija = "";
 		
 		try {
@@ -73,7 +84,9 @@ public class Komentari {
 					
 					Kupac kupac = null;
 					//pretrazimo tog kupca
-					for(Korisnik k : this.getKorisnici().getKorisnici()) {
+					
+					
+					for(Korisnik k : this.korisnici.getKorisnici()) {
 						if(k.getKorisnickoIme().equals(korisnickoIme) && k.getLozinka().equals(lozinka)) {
 							kupac = (Kupac) k;
 						}
@@ -89,7 +102,7 @@ public class Komentari {
 					LocalDateTime datum = LocalDateTime.parse(datumManifestacije.replace("T", " "), format);
 					
 					Manifestacija manifestacijaKom = null;
-					for(Manifestacija m: this.getManifestacije().getManifestacije()) {
+					for(Manifestacija m: this.manifestacije.getManifestacije()) {
 						if(m.getDatumIvremeOdrzavanja().equals(datum) && m.getNaziv().equals(nazivManifestacije)) {
 							manifestacijaKom = m;
 						}
@@ -164,28 +177,13 @@ public class Komentari {
 		}
 	}
 	
-	private Korisnici getKorisnici() {
-		Korisnici korisnici = (Korisnici) ctx.getAttribute("korisnici");
-		
-		if(korisnici == null) {
-			korisnici = new Korisnici(ctx.getRealPath(""));
-			
-			//System.out.println("putanja: " + ctx.getRealPath("") + System.lineSeparator());
-			ctx.setAttribute("korisnici", korisnici);
-		}
-		return korisnici;
-	}
 	
-	private Manifestacije getManifestacije() {
-		Manifestacije manifestacije = (Manifestacije) ctx.getAttribute("manifestacije");
-		
-		if(manifestacije == null) {
-			manifestacije = new Manifestacije(ctx.getRealPath(""));
-			
-			System.out.println("putanja: " + ctx.getRealPath("") + System.lineSeparator());
-			ctx.setAttribute("manifestacije", manifestacije);
-		}
-		return manifestacije;
+	
+	public ArrayList<Komentar> getKomentari() {
+		return komentari;
 	}
 
+	public void setKomentari(ArrayList<Komentar> komentari) {
+		this.komentari = komentari;
+	}
 }

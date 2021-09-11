@@ -57,9 +57,15 @@
 <br/>
 <br/>
 <div id="dodajKomentar">
-
-	<textarea type="text" id="noviKomentar" placeholder="Napisite komentar..." ></textarea>
-    <input id="dodajKomentar" type="submit" value="dodaj komentar"/>
+	
+		<label>Ocena: </label>
+    	<input type="range" name="ocena" min="1" max="5">
+    	<label id="vrednostOcene"></label>
+    	<br>
+		<textarea type="text" id="noviKomentar" placeholder="Napisite komentar..." ></textarea>
+    	<button id="dodajKomentarDugme"  >dodaj komentar</button> 
+	
+	
 </div>
 
 <br/>

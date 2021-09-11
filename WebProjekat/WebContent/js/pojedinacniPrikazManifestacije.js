@@ -168,6 +168,9 @@ function dodajKomentar(korisnik, manifestacija){
 	console.log("********* PROVERA KOMENTARISANJE MOZ LI **************");
 	mozeLiDaKomentarise(korisnik, manifestacija);
 	
+	//funkcionalnost dodavanja novog komentara
+	dodavanjeKomentaraFunkcionalnost(korisnik, manifestacija);
+	
 	
 	
 }
@@ -216,6 +219,46 @@ function mozeLiDaKomentarise(korisnik, manifestacija){
 			}
 	);
 }	
+
+function dodavanjeKomentaraFunkcionalnost(korisnik, manifestacija){
+	
+	//automatski prikazujemo izabranu vrednost ocene
+	$("input[name=ocena]").change(function(){
+		$("#vrednostOcene").text($("input[name=ocena]").val());
+	})
+	
+	//ako je kliknuto na dugme dodaj komentar
+	$("#dodajKomentarDugme").click(function(){
+		
+		console.log("Kliknuto je na dodavanje...");
+		
+		//preuzimamo text komentara
+		let textKomentar = $("#noviKomentar").val();
+		console.log("TExt komentara je: " + textKomentar);
+		
+		let vrednostOcene = $("input[name=ocena]").val();
+		console.log("Vrednost ocenjena je: "+ vrednostOcene);		
+		
+		//sad ovaj komentar dodajemo 
+		let noviKomentar = {
+				"kupacKomentator": korisnik,
+				"manifestacija": manifestacija,
+				"textKomentara": textKomentar,
+				"ocena": vrednostOcene
+		}
+		$.post(
+				"../WebProjekat/rest/komentari/noviKomentar",
+				JSON.stringify(noviKomentar),
+				function(data, status){
+					console.log("*****   Dodat je komentar: " + JSON.stringify(data)); 
+				}
+		);
+		
+	})
+	
+	
+	
+}
 
 /*function potvrdiRezervaciju(brojKarti, manifestacija, narucilac, tipKarte){
 	console.log("Upali smo u potvrdu rezervacije...");

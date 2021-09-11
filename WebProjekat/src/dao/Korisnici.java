@@ -40,6 +40,7 @@ public class Korisnici {
 			System.out.println(file.getCanonicalPath());
 			in = new BufferedReader(new FileReader(file));
 			procitajKorisnike(in);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
