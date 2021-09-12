@@ -19,6 +19,56 @@ form{
 	padding-bottom:50px;
 }
 
+/*** postavljamo za profil za kupca sortiranje rezervisanih i pretraga karti ***/
+#pretragaPoNazivu{
+	margin:auto;
+	padding-left: 120px;
+	padding-right: 150px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#pretragaPoCeni{
+	margin:auto;
+	padding-left: 120px;
+	padding-right: 150px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#pretragaPoDatumu{
+	margin:auto;
+	padding-left: 120px;
+	padding-right: 150px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+#sortiranjeForma{
+	margin:auto;
+	padding-left: 120px;
+	padding-right: 150px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+#filtriranjeFormaTip{
+	margin:auto;
+	padding-left: 120px;
+	padding-right: 150px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+#filtriranjeFormaStatus{
+	margin:auto;
+	padding-left: 120px;
+	padding-right: 150px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+
+
+
+
 
 * {
   box-sizing: border-box;
@@ -29,7 +79,7 @@ form{
 	padding: 12px;
 }*/
 
-input[type=text],input[type=date], select, textarea {
+input[type=text],input[type=date],  textarea {
   width: 50%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -56,10 +106,40 @@ input[type=submit] {
   cursor: pointer;
   float: right;
 }
+#undoDugme{
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  margin-bottom: 100px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+#dugmicPotvrde{
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+	
+}
 
 input[type=submit]:hover {
   background-color: #45a049;
 }
+
+/***** select ******/
+/*select #sortiranjeKarata{
+  width: 50%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}*/
 
 .container {
   border-radius: 5px;

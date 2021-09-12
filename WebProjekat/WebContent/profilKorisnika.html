@@ -72,7 +72,7 @@
  		</div>
  	</div>
  	<div>
- 		 <input type="submit" value="izmeni podatke profila"/>
+ 		 <input type="submit" id="dugmicPotvrde" value="izmeni podatke profila"/>
  		
  	</div>
  	
@@ -81,6 +81,7 @@
 
 <br>
 <hr/>
+<div class="registracijaDiv">
 <div class="pretragaKarata">
 	<div>
 		<form id="pretragaPoNazivu">
@@ -89,7 +90,9 @@
 			<input type="submit" value="pretrazi po nazivu">
 		</form>
 	</div>
-	
+	<br/>
+	<br/>
+	<hr>
 	<div>
 		<form id="pretragaPoCeni">
 			<label>Pretraga po ceni: </label>
@@ -101,13 +104,14 @@
 			<label>cena do: </label>
 			<input type="range" name="cenaDo">
 			<label id="izabranaCenaDo"></label>
-			<br>
+			
 			<input type="submit" value="pretraziPoCeni">
 		
 		</form>
 		
 	</div>
-	
+	<br/>
+	<hr>
 	<div>
 		<form id="pretragaPoDatumu">
 			<label>Pretraga po datumu: </label>
@@ -119,14 +123,18 @@
 			<label>datum do: </label>
 			<input type="datetime-local" name="datumDo">
 			<label id="izabranDatumDo"></label>
-			<br>
+			
 			<input type="submit" value="pretraziPoDatumu">
 		
 		</form>
 		
 	</div>
 	
+	<br/>
+	<hr>
+	
 	<div id="sortiranje">
+		
 		<form id="sortiranjeForma">
 		<label>Sortiranje karti: </label>
 		
@@ -175,12 +183,13 @@
 		<input type="submit" value="filtriraj">
 		</form>
 	</div>
+	<br/>
+	<hr>
 	
-	<div> 
-		<button id="undoDugme"> Ponisti pretragu ili filtere</button>
-	</div>
+	
 
 </div>
+<h5>Pregled rezervisanih karti korisnika: </h5>
 
 <div class="pregledRezervisanihKarataKorisnika">
 <table id="tabelaRezervisanihKarata">
@@ -196,6 +205,14 @@
 	</tr>
 </table>
 <p id="porukaInfo" style="color:red"> </p>
+
+ 
+<button id="undoDugme"> Ponisti pretragu ili filtere</button>
+
+</div>
+
+	
+
 </div>
 </body>
 </html>
