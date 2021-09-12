@@ -40,7 +40,7 @@ $(document).ready(function(){
 		
 		//***VALIDACIJA >> za prazne unose..
 		
-		let dozvoljenjaRegistracija = true;
+		let dozvoljenaRegistracija = true;
 		
 		if(ime == ""){
 			dozvoljenaRegistracija = false;
@@ -84,7 +84,7 @@ $(document).ready(function(){
 		
 		// REGISTRACIJA >> ajax poziv za registrovanje
 		
-		if(dozvoljenjaRegistracija == true){
+		if(dozvoljenaRegistracija == true){
 			console.log("Dozvoljena je....");
 			
 			$.post(
@@ -95,6 +95,9 @@ $(document).ready(function(){
 				console.log("Status je: " + status);
 				console.log("Novi korisnik je registrovan..");
 				//preusmeri se na stranicu za logovanje..
+				
+				alert("Korisnik je uspesno registrovan..");
+				window.location.href = "logovanje.html";
 				
 			}
 					

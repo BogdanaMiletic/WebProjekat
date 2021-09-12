@@ -45,7 +45,7 @@ $(document).ready(function(){
 		
 		//***VALIDACIJA >> za prazne unose..
 		
-		let dozvoljenjaRegistracija = true;
+		let dozvoljenaRegistracija = true;
 		
 		if(ime == ""){
 			dozvoljenaRegistracija = false;
@@ -87,24 +87,44 @@ $(document).ready(function(){
 		
 		event.preventDefault();
 		
-		// REGISTRACIJA >> ajax poziv za registrovanje
+		//provera jedinstvenosti korisnickogImena 
 		
-		if(dozvoljenjaRegistracija == true){
-			console.log("Dozvoljena je....");
-			
-			$.post(
-			"../WebProjekat/rest/registracija/registracijaKupaca",
-			JSON.stringify(kupac),
-			
-			function(data, status){
-				console.log("Status je: " + status);
-				console.log("Korisnik je registrovan...");
-				$("p[name=poruka]").text("Uspesno ste se registrovali."); 
-				$("div[name=porukaUputstvo]").append("<a href=\"logovanje.html\">Uloguj se</a>")
-			}
+		let jedinstvenoKorisnickoIme= true;
+		
+		$.get(
+			"../WebProjekat/rest/korisnici/", 
+			function (data, status){
+				
+				for(let korisnik of data){
+					if(korisnik.korisnickoIme == korisnickoIme){
+						jedinstvenoKorisnickoIme = false;
+						$("p[name=poruka]").text("Korisnicko ime mora biti jedinstvene vrednosti.."); 
+
+						
+					}
+				}
+				
+				// REGISTRACIJA >> ajax poziv za registrovanje
+				
+				if(dozvoljenaRegistracija == true && jedinstvenoKorisnickoIme == true){
+					console.log("Dozvoljena je....");
 					
-			);
-		}
+					$.post(
+					"../WebProjekat/rest/registracija/registracijaKupaca",
+					JSON.stringify(kupac),
+					
+					function(data, status){
+						console.log("Status je: " + status);
+						console.log("Korisnik je registrovan...");
+						$("p[name=poruka]").text("Uspesno ste se registrovali."); 
+						$("div[name=porukaUputstvo]").append("<a href=\"logovanje.html\">Uloguj se</a>")
+					}
+							
+					);
+				}
+			}
+		);
+		
 	});
 	
 });

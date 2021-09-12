@@ -36,7 +36,8 @@ public class Registracija {
 	public void preuzmiFajl() throws IOException {
 		this.procitajFajl(ctx.getRealPath(""));
 	}
-
+	
+	
 	@POST
 	@Path("/registracijaKupaca")
 	//@Consumes(MediaType.APPLICATION_JSON)

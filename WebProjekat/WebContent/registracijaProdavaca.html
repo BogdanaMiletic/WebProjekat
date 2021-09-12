@@ -5,9 +5,30 @@
 <title>Registracija prodavaca</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/registracijaProdavaca.js"></script>
+
+<link rel="stylesheet" href="css/registracija.css"></link>
+<link rel="stylesheet" href="css/heder.css"></link>
+
+
+<script>
+	//ucitavanje hedera stranice
+	$(function(){
+		$("#heder").load("heder.html");
+	});
+</script>
+
 </head>
 <body>
+
+<div id="heder">
+</div>
+<hr>
+
+<div class="registracijaDiv">
 <form>
+	<div>
+		<h1>Registracija prodavca</h1>
+	</div>
 	<div>
 		<label>Ime: </label>
  		<input type="text" name="ime">
@@ -34,14 +55,20 @@
  		
  	<div>
  		<label>Pol: </label>
- 		<br/>
- 		<input type="radio" name="muski" value="MUSKI">
- 		<label for="muski">muski</label>
- 		<input type="radio" name="zenski" value="ZENSKI">
- 		<label for="zenski">zenski</label>
+ 		<div id="radioDeo">
+ 			<input type="radio" name="muski" value="MUSKI">
+ 			<label for="muski">muski</label>
+ 			<input type="radio" name="zenski" value="ZENSKI">
+ 			<label for="zenski">zenski</label>
+ 		</div>
  	</div>
- 	<input type="submit" value="registruj se"/>
+ 	
+ 	<div>
+ 		 <input type="submit" value="registruj se"/>		
+ 	</div>
  	
 </form>
+</div>
+
 </body>
 </html>
