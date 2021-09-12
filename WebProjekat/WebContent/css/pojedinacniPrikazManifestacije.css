@@ -69,6 +69,17 @@
   	background-color: #f1f1f1;
   	margin-bottom: 20px;
 }
-
+#dugmeIzmena{
+	text-decoration: none;
+	text-align: center;
+	color: #333;
+	border: solid 1px;
+	border-color: #333;
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px;
+	float:right;
+	width: 45;
+}
 
 

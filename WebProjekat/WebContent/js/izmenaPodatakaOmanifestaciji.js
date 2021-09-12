@@ -26,23 +26,20 @@ $(document).ready(function(){
 	//reagujemo na dogadjaj promene statusa jedan se pali drugi se gasi
 	$("input[name=aktivno]").change(function(){
 		//ako se promeni ovaj se pali, a drugi se gasi
-		$("input[name=aktivno]").checked = true;
-		$("input[name=neaktivno]").checked = false;
+		$("input[name=aktivno]").prop("checked",true);
+		$("input[name=neaktivno]").prop("checked", false);
 	});
 	
 	$("input[name=neaktivno]").change(function(){
 		//ako se promeni ovaj se pali, a drugi se gasi
-		$("input[name=aktivno]").checked = false;
-		$("input[name=neaktivno]").checked = true;
+		$("input[name=aktivno]").prop("checked", false);
+		$("input[name=neaktivno]").prop("checked", true);
 	});
 		
 
 		
 	
-	
-	$("input[name=neaktivno]").change(function(){
-		//ako se promeni ovaj se pali drugi se gasi
-	});
+
 	
 	$("#formaDodavanjeManifestacije").submit(function(event){
 		console.log("Upaliiiii");
@@ -109,7 +106,7 @@ $(document).ready(function(){
 			event.preventDefault();
 			//put zahtev za izmenu podataka izabrane manifestacije..
 			$.ajax({
-				   url: "../WebProjekat/rest/manifestacije/izmeniManifestaciju/" + sirinaStara + "/" + duzinaStara + "/" +datumStari, 
+				   url: "../WebProjekat/rest/manifestacije/izmeniManifestaciju/" + nazivStari + "/" + sirinaStara + "/" + duzinaStara + "/" +datumStari, 
 				   type: 'PUT',
 				   data: JSON.stringify(novaManifestacija),
 				   success: function(response) {

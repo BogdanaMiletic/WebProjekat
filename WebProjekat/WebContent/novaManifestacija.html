@@ -7,9 +7,27 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/dodavanjeNoveManifestacije.js"></script>
 
+<link rel="stylesheet" href="css/registracija.css"></link>
+<link rel="stylesheet" href="css/heder.css"></link>
+
+
+<script>
+	//ucitavanje hedera stranice
+	$(function(){
+		$("#heder").load("heder.html");
+	});
+</script>
+
 </head>
 <body>
+
+<div id="heder">
+</div>
+<hr> 
+
+<div class="registracijaDiv">
 <form id="formaDodavanjeManifestacije" >
+	<h1>Dodavanje nove manifestacije</h1>
 <div>
 	<label>Naziv: </label>
 	<input type="text" name="naziv">
@@ -94,7 +112,7 @@
   	<input type="submit" class="dugmic" value="Dodaj manifestaciju"/>
 	
 </form>
-
+</div>
 
 </body>
 </html>

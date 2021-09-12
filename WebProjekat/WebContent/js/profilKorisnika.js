@@ -18,12 +18,16 @@ $(document).ready(function(){
 				$("input[name=korisnickoIme").attr("value", data.korisnickoIme);
 				$("input[name=datumRodjenja").attr("value", data.datumRodjenja);
 				$("label[name=uloga]").parent().append( data.uloga );
+				
+				//proveri sta je chekirano pol...
 				if(data.pol == "ZENSKI"){
 					$("input[name=zenski]").prop("checked", true);
+					$("input[name=muski]").prop("checked", false);
 					console.log("Checkirano je zenski... poll");
 				}
 				else{
 					$("input[name=muski]").prop("checked", true);
+					$("input[name=zenski]").prop("checked", false);
 					console.log("Chekiran je muski polll");
 				}
 				
@@ -63,6 +67,18 @@ $(document).ready(function(){
 	});
 	
 	//ako je neki input polje menjano obelezimo to i upisujemo onda novu vrendost...
+	//ako je poll promenjen
+	
+	$("input[name=zenski]").change(function(){
+		$("input[name=zenski]").prop("checked", true);
+		$("input[name=muski]").prop("checked", false);
+		
+	})
+	$("input[name=muski]").change(function(){
+		$("input[name=zenski]").prop("checked", false);
+		$("input[name=muski]").prop("checked", true);
+		
+	})
 	
 	
 	//ako se desi neka promena u podacima i ako se klikne na promeni podatke..
@@ -103,6 +119,8 @@ $(document).ready(function(){
 		if(validacija === true){
 			//ako su svi podaci ispravni promeni ih...
 			console.log("Uspesna validacija...........................");
+			//preuzimamo selektovanu vrednost za pol
+			
 			//PROVERI STA JE MENJANO A STA NIJE >> AKO JE NESTO PROMENJENO ZADRZI STARE VREDNOSTI....
 			
 			let noviPodaci={

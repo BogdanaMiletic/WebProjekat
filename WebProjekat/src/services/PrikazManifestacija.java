@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.Karte;
 import dao.Korisnici;
 import dao.Manifestacije;
-import model.Karta;
 import model.Korisnik;
 import model.Manifestacija;
 import model.Manifestacija.TipManifestacije;
@@ -51,9 +50,25 @@ public class PrikazManifestacija {
 		
 		Comparator poDatumuOdrzavanja = new Comparator() {
 		
-
+			//kako sortirati najskorije manifesetacije..
 			@Override
 			public int compare(Object o1, Object o2) {
+				LocalDateTime sad = LocalDateTime.now();
+				
+				/*if((((Manifestacija) o1).getDatumIvremeOdrzavanja().isAfter(sad)) && (((Manifestacija)o2).getDatumIvremeOdrzavanja().isAfter(sad))) {
+					if((Manifestacija) o1.getDatumIvreme().isBefore(((Manifestacija) o2).getDatumIvremeOdrzavanja()){
+						return 1;
+					}
+					else {
+						return -1;
+					}
+				}
+				else {
+					return -1;
+				}*/
+				
+				//return 0;
+				
 				if((((Manifestacija) o1).getDatumIvremeOdrzavanja()).isBefore(((Manifestacija) o2).getDatumIvremeOdrzavanja())) {
 					return 1;
 				}
@@ -335,10 +350,10 @@ public class PrikazManifestacija {
 	
 	
 	@PUT
-	@Path("/izmeniManifestaciju/{geografskaSirina}/{geografskaDuzina}/{datum}")
+	@Path("/izmeniManifestaciju/{naziv}/{geografskaSirina}/{geografskaDuzina}/{datum}")
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manifestacija izmeniPodatkeManifestacije(@PathParam("datum")String datum, 
+	public Manifestacija izmeniPodatkeManifestacije(@PathParam("naziv")String naziv, @PathParam("datum")String datum, 
 			@PathParam("geografskaSirina")String geografskaSirina, @PathParam("geografskaDuzina") String geografskaDuzina, String noviPodaci ) throws JsonParseException, JsonMappingException, IOException {
 		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -360,7 +375,7 @@ public class PrikazManifestacija {
 		}
 		
 		for(Manifestacija m : this.getManifestacije().getManifestacije()) {
-			if (m.getDatumIvremeOdrzavanja().equals(datumParsiran) && 
+			if (m.getDatumIvremeOdrzavanja().equals(datumParsiran) && m.getNaziv().equals(naziv) &&
 					m.getLokacija().getGeografskaDuzina() == Double.parseDouble(geografskaDuzina)&&
 					m.getLokacija().getGeografskaSirina() == Double.parseDouble(geografskaSirina)) {
 				

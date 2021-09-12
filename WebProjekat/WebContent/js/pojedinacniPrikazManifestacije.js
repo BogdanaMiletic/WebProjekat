@@ -53,7 +53,7 @@ $(document).ready(function(){
 						if(podatak.uloga == "PRODAVAC"){
 							console.log("Ulogovan je prodavac...");
 							console.log("POdaci: " + data.lokacija.adresa + " ," + data.lokacija.geografskaSirina + " ," + data.lokacija.geografskaDuzina);
-							$("#prikazManifestacije").append("<a href=\"izmenaPodatakaOmanifestaciji.html?naziv="+data.naziv + "&datum="+ data.datumIvremeOdrzavanja +"&lokacija="+data.lokacija.adresa+ "&sirina="+data.lokacija.geografskaSirina +"&duzina="+data.lokacija.geografskaDuzina+ "\">Izmeni podatke o manifestaciji</a>")
+							$("#prikazManifestacije").append("<a id=\"dugmeIzmena\" href=\"izmenaPodatakaOmanifestaciji.html?naziv="+data.naziv + "&datum="+ data.datumIvremeOdrzavanja +"&lokacija="+data.lokacija.adresa+ "&sirina="+data.lokacija.geografskaSirina +"&duzina="+data.lokacija.geografskaDuzina+ "\">Izmeni podatke o manifestaciji</a>")
 						
 							//oni ne daju komentare>>>>
 							$("#dodajKomentar").hide();
@@ -266,6 +266,7 @@ function dodavanjeKomentaraFunkcionalnost(korisnik, manifestacija){
 				JSON.stringify(noviKomentar),
 				function(data, status){
 					console.log("*****   Dodat je komentar: " + JSON.stringify(data)); 
+					alert("Komentar je dodat...");
 				}
 		);
 		
@@ -293,10 +294,11 @@ function prikazKomentara(korisnik, manifestacija){
 									komentar.manifestacija.datumIvremeOdrzavanja == manifestacija.datumIvremeOdrzavanja){
 							
 								$("#pregledKomentara").append("<div class=\"kom\"> </div>");
-								$(".kom").append("<label>" + komentar.kupacKomentator.ime +" "+ komentar.kupacKomentator.prezime + "</label>");
-								$(".kom").append("<br/>");
+								$(".kom").append("<h5>" + komentar.kupacKomentator.ime +" "+ komentar.kupacKomentator.prezime + "</h5>");
 								$(".kom").append("<label>" + komentar.textKomentara + "</label>");
+								$(".kom").append("<br/>")
 								$(".kom").append("<label> Ocena: " + komentar.ocena + "</label>" );
+								
 								$(".kom").append("<label> Status: " + komentar.status + "</label>");
 								$(".kom").append("<hr>");
 							}
@@ -312,9 +314,9 @@ function prikazKomentara(korisnik, manifestacija){
 								komentar.manifestacija.datumIvremeOdrzavanja == manifestacija.datumIvremeOdrzavanja){
 							
 							$("#pregledKomentara").append("<div class=\"kom\"> </div>");
-							$(".kom").append("<label>" + komentar.kupacKomentator.ime +" "+ komentar.kupacKomentator.prezime + "</label>");
-							$(".kom").append("<br/>");
+							$(".kom").append("<h5>" + komentar.kupacKomentator.ime +" "+ komentar.kupacKomentator.prezime + "</h5>");
 							$(".kom").append("<label>" + komentar.textKomentara + "</label>");
+							$(".kom").append("<br/>");
 							$(".kom").append("<label> Ocena: " + komentar.ocena + "</label>" );
 							$(".kom").append("<label> Status: " + komentar.status + "</label>");
 							
@@ -349,6 +351,7 @@ function odobravanjeKomentara(komentar, manifestacija, korisnik){
 			success: function(data, status) {
 			       console.log("Komentar je odobren....");
 			       console.log(JSON.stringify(data));
+			       alert("Komentar je odobren..");
 			}
 		});
 	})
@@ -362,6 +365,7 @@ function odobravanjeKomentara(komentar, manifestacija, korisnik){
 			type: 'PUT',
 			success: function(result) {
 			        console.log("Komentar je odbijen");
+			        alert("Komentar je odbijen..");
 			}
 		});
 	})		
