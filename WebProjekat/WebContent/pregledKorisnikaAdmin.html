@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Pregled korisnika sistema</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/pregledKorisnikaAdmin.js"></script>
+
+<!-- <link rel="stylesheet" href="css/registracija.css"></link> -->
+<link rel="stylesheet" href="css/heder.css"></link>
+
+
+<script>
+	//ucitavanje hedera stranice
+	$(function(){
+		$("#heder").load("heder.html");
+	});
+</script>
+</head>
+<body>
+
+	<div id="heder">
+	</div>
+	
+	<h1>Pregled svih korisnika sistema</h1>
+	
+<div class="pregledKorisnika">
+<table id="tabelaRegistrovanihKorisnika">
+	<tr>
+		<th>IME </th>
+		<th>PREZIME</th>
+		<th>KORISNICKO IME</th>
+		<th>LOZINKA</th>
+		<th>POL</th>
+		<th>DATUM RODJENJA </th>
+		<th>ULOGA</th>
+	</tr>
+</table>
+<p id="porukaInfo" style="color:red"> </p>
+	
+</body>
+</html>

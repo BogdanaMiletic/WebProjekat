@@ -6,6 +6,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/profilKorisnika.js"></script>
 
+<link rel="stylesheet" href="css/registracija.css"></link>
+
 <link rel="stylesheet" href="css/heder.css"></link>
 
 
@@ -27,9 +29,10 @@
 </div>
 <hr>
 
-<p> Uspesno ulogovani...</p>
-<p> Profil ulogovanog korisnika</p>
-<form action="#" method="PUT" id="formaPodatciProfila">
+<div class="registracijaDiv">
+
+<form  id="formaPodatciProfila">
+<div><h1> Profil ulogovanog korisnika</h1></div>
 <div>
 		<label>Ime: </label>
  		<input type="text" name="ime">
@@ -60,15 +63,22 @@
  		
  	<div>
  		<label>Pol: </label>
- 		<br/>
- 		<input type="radio" name="muski" value="MUSKI">
- 		<label for="muski">muski</label>
- 		<input type="radio" name="zenski" value="ZENSKI">
- 		<label for="zenski">zenski</label>
+ 		<div id="radioDeo">
+ 			<input type="radio" name="muski" value="MUSKI">
+ 			<label for="muski">muski</label>
+ 			<input type="radio" name="zenski" value="ZENSKI">
+ 			<label for="zenski">zenski</label>
+ 
+ 		</div>
  	</div>
- 	<input type="submit" value="izmeni podatke profila"/>
+ 	<div>
+ 		 <input type="submit" value="izmeni podatke profila"/>
+ 		
+ 	</div>
  	
 </form>
+</div>
+
 <br>
 <hr/>
 <div class="pretragaKarata">

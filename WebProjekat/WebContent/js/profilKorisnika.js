@@ -125,7 +125,7 @@ $(document).ready(function(){
 				}
 			});
 			
-			//alert("Uspesno ste promenili podatke sa korisnickog profila..");
+			alert("Uspesno ste promenili podatke sa korisnickog profila..");
 			console.log("Uspesno promenjeni podatci s profila..");
 		}
 		else{
